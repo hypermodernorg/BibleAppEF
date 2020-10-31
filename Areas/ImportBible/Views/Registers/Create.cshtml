@@ -1,0 +1,90 @@
+﻿@model BibleAppEF.Areas.ImportBible.Models.Register
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>Add New Version</h1>
+
+<hr />
+<form asp-action="Create" enctype="multipart/form-data">
+
+    <div class="row">
+        <div class="col">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="file" id="newbible" onchange="onChange(event)" name="file" />
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col">
+           
+
+            <div class="form-group">
+                <label asp-for="Source" class="control-label"></label>
+                <input asp-for="Source" class="form-control" />
+                <small class="form-text text-muted">The source the text came from.</small>
+
+                <span asp-validation-for="Source" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input asp-for="Name" class="form-control" />
+                <small class="form-text text-muted">The name of the Bible version.</small>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="FileType" class="control-label"></label>
+                <input asp-for="FileType" class="form-control" />
+                <small class="form-text text-muted">File type of the source.</small>
+                <span asp-validation-for="FileType" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Copyright" class="control-label"></label>
+                <input asp-for="Copyright" class="form-control" />
+                <small class="form-text text-muted">... or copyleft.</small>
+                <span asp-validation-for="Copyright" class="text-danger"></span>
+            </div>
+        </div>
+        <div class="col">
+
+            <div class="form-group">
+                <label asp-for="Abbreviation" class="control-label"></label>
+                <input asp-for="Abbreviation" class="form-control" />
+                <small class="form-text text-muted">Abbreviation that will be displayed to the end user.</small>
+                <span asp-validation-for="Abbreviation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Language" class="control-label"></label>
+                <input asp-for="Language" class="form-control" />
+                <small class="form-text text-muted">Language the text is written in.</small>
+                <span asp-validation-for="Language" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Note" class="control-label"></label>
+                <input asp-for="Note" class="form-control" />
+                <small class="form-text text-muted">Other information.</small>
+                <span asp-validation-for="Note" class="text-danger"></span>
+            </div>
+            <div class="form-group form-check">
+                <label class="form-check-label">
+                    <input class="form-check-input" type="checkbox" asp-for="IsActive" /> @Html.DisplayNameFor(model => model.IsActive)
+                    <small class="form-text text-muted">Check to activate this bible for end user viewing.</small>
+                </label>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary bg-dark" />
+            </div>
+        </div>
+    </div>
+</form>
+
+    <div>
+        <a asp-action="Index">Back to List</a>
+    </div>
+
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
