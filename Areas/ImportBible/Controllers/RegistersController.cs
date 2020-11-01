@@ -197,10 +197,28 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var register = await _context.Registers.FindAsync(id);
-            _context.Registers.Remove(register);
-            await _context.SaveChangesAsync();
+            var abbreviation = register.Abbreviation;
+            _context.Registers.Remove(register); // registration to remove
+            
+
+            Bible bible = new Bible();
+
+            var lines = _context.Bibles
+                 .FromSqlRaw($"Select * from bibles where Version = '{abbreviation}'")
+                 .ToList();
+            _context.Bibles.RemoveRange(lines); // bible version to remove
+
+            await _context.SaveChangesAsync(); // remove both the registration and the bible version
             return RedirectToAction(nameof(Index));
         }
+
+
+
+
+
+
+
+
 
         private bool RegisterExists(int id)
         {
