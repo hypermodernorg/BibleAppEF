@@ -11,6 +11,7 @@ using BibleAppEF.Areas.ImportBible.Models;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.RegularExpressions;
+using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -61,10 +62,11 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             Bible bible = new Bible();
 
             BibleContext bibleContext = new BibleContext();
-            
-           
-            string pattern = @"(\w*)\W(\w)\W(\w)\W\W\w*\W([\s\S]*)";
 
+
+            //string pattern = @"(\w*)\W(\w)\W(\w)\W\W\w*\W([\s\S]*)";
+         
+            string pattern = @"(\d{1,3}\w)\W(\d{1,3})\W(\d{1,3})\W{1,2}\d{1,7}\W{1}([\ \S*]*)";
             // Instantiate the regular expression object.
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
             
@@ -72,13 +74,14 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             {
                 Match m = r.Match(bibleText[i]);
 
-                if (m.Groups.Count >= 2)
+                if (m.Groups.Count >= 4)
                 {
+                    bible.Id = 0;
                     bible.Version = register.Abbreviation;
                     bible.BookChapterVerse = m.Groups[1].ToString() + m.Groups[2].ToString() + m.Groups[3].ToString();
                     bible.Book = m.Groups[1].ToString();
-                    bible.Chapter = Int32.Parse(m.Groups[2].ToString());
-                    bible.Verse = Int32.Parse(m.Groups[3].ToString());
+                    bible.Chapter = int.Parse(m.Groups[2].ToString()); 
+                    bible.Verse = int.Parse(m.Groups[3].ToString());
                     bible.BibleText = m.Groups[4].ToString();
                     bibleContext.Add(bible);
                     await bibleContext.SaveChangesAsync();
