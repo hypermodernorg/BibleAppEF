@@ -8,8 +8,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace BibleAppEF.Migrations
 {
     [DbContext(typeof(BibleContext))]
-    [Migration("20201101125759_Init20201101")]
-    partial class Init20201101
+    [Migration("20201102151429_InitialCreate20201102")]
+    partial class InitialCreate20201102
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -85,6 +85,31 @@ namespace BibleAppEF.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Registers");
+                });
+
+            modelBuilder.Entity("BibleAppEF.Areas.ImportBible.Models.UserNotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("BookChapterVerse")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Version")
+                        .HasColumnType("varchar(40)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notes");
                 });
 #pragma warning restore 612, 618
         }

@@ -3,7 +3,7 @@ using MySql.Data.EntityFrameworkCore.Metadata;
 
 namespace BibleAppEF.Migrations
 {
-    public partial class Init20201101 : Migration
+    public partial class InitialCreate20201102 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -23,6 +23,22 @@ namespace BibleAppEF.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Bibles", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Notes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    UID = table.Column<int>(nullable: false),
+                    Version = table.Column<string>(type: "varchar(40)", nullable: true),
+                    BookChapterVerse = table.Column<string>(type: "varchar(100)", nullable: false),
+                    Notes = table.Column<string>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Notes", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -50,6 +66,9 @@ namespace BibleAppEF.Migrations
         {
             migrationBuilder.DropTable(
                 name: "Bibles");
+
+            migrationBuilder.DropTable(
+                name: "Notes");
 
             migrationBuilder.DropTable(
                 name: "Registers");

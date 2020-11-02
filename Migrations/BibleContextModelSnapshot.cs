@@ -84,6 +84,31 @@ namespace BibleAppEF.Migrations
 
                     b.ToTable("Registers");
                 });
+
+            modelBuilder.Entity("BibleAppEF.Areas.ImportBible.Models.UserNotes", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("BookChapterVerse")
+                        .IsRequired()
+                        .HasColumnType("varchar(100)");
+
+                    b.Property<string>("Notes")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<int>("UID")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Version")
+                        .HasColumnType("varchar(40)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Notes");
+                });
 #pragma warning restore 612, 618
         }
     }

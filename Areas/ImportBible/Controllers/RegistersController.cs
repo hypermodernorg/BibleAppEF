@@ -27,6 +27,27 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             _env = env;
         }
 
+
+        // Search
+        public async Task<IActionResult> Search()
+        {
+            List<string> versionList = new List<string>();
+            var availableVersions = await _context.Registers.ToListAsync();
+            foreach (var versions in availableVersions)
+            {
+                if (versions.IsActive)
+                {
+                    versionList.Add(versions.Abbreviation);
+                }
+
+            }
+            ViewData.Model = versionList;
+
+            return View();
+        }
+        // End Search
+
+
         // GET: ImportBible/Registers
         public async Task<IActionResult> Index()
         {
@@ -62,7 +83,8 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             Bible bible = new Bible();
             BibleContext bibleContext = new BibleContext();
 
-            const string pattern = @"(\d{1,3}\w)\W(\d{1,3})\W(\d{1,3})\W{1,2}\d{1,7}\W{1}([\ \S*]*)";
+            const string pattern = @"(\d{1,3}\w)\s(\d{1,3})\s(\d{1,3})\s*\d*\s*\s*([\ \S*]*)";
+            //(\d{1,3}\w)\W(\d{1,3})\W(\d{1,3})\W{1,2}\d{1,7}\W{1}([\ \S*]*)";
 
             // Instantiate the regular expression object.
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
@@ -208,7 +230,6 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             var register = await _context.Registers.FindAsync(id);
             var abbreviation = register.Abbreviation;
             _context.Registers.Remove(register); // registration to remove
-            
 
             Bible bible = new Bible();
 
@@ -225,5 +246,5 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         {
             return _context.Registers.Any(e => e.Id == id);
         }
-    }    
+    }
 }
