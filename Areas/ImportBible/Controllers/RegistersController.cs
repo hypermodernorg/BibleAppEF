@@ -75,7 +75,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 {
                     bible.Id = 0;
                     bible.Version = register.Abbreviation;
-                    bible.BookChapterVerse = m.Groups[1].ToString() + m.Groups[2].ToString() + m.Groups[3].ToString();
+                    bible.BookChapterVerse = m.Groups[1].ToString() + "|" +m.Groups[2].ToString() + "|" + m.Groups[3].ToString();
                     bible.Book = m.Groups[1].ToString();
                     bible.Chapter = int.Parse(m.Groups[2].ToString());
                     bible.Verse = int.Parse(m.Groups[3].ToString());
@@ -145,6 +145,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Source,Name,FileType,Copyright,Abbreviation,Language,Note,IsActive")] Register register)
         {
+            var abbreviation = register.Abbreviation;
             if (id != register.Id)
             {
                 return NotFound();
@@ -155,6 +156,14 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 try
                 {
                     _context.Update(register);
+
+                    //Bible bible = new Bible();
+
+                    //var lines = _context.Bibles
+                    //     .FromSqlRaw($"Select * from bibles where Version = '{abbreviation}'")
+                    //     .ToList();
+
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -212,17 +221,9 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             return RedirectToAction(nameof(Index));
         }
 
-
-
-
-
-
-
-
-
         private bool RegisterExists(int id)
         {
             return _context.Registers.Any(e => e.Id == id);
         }
-    }
+    }    
 }

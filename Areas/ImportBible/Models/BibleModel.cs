@@ -26,6 +26,7 @@ namespace BibleAppEF.Areas.ImportBible.Models
         public string Note { get; set; }
         public bool IsActive { get; set; }
     }
+
     public class Bible
     {
         public int Id { get; set; }
@@ -40,5 +41,18 @@ namespace BibleAppEF.Areas.ImportBible.Models
         [Column(TypeName = "varchar(40)")]
         public int Verse { get; set; }
         public string BibleText { get; set; }
+    }
+
+    public class UserNotes
+    {
+        public int Id { get; set; }
+        [Required]
+        public int UID { get; set; }
+        [Column(TypeName = "varchar(40)")]
+        public string Version { get; set; }
+        [Required][Column(TypeName = "varchar(100)")]
+        public string BookChapterVerse { get; set; }
+        [Required]
+        public string Notes { get; set; }
     }
 }

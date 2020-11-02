@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using BibleAppEF.Areas.ImportBible.Models;
+using Newtonsoft.Json.Linq;
 
 namespace BibleAppEF.Areas.ImportBible.Data
 {
@@ -12,6 +13,7 @@ namespace BibleAppEF.Areas.ImportBible.Data
     {
         public DbSet<Register> Registers { get; set; }
         public DbSet<Bible> Bibles { get; set; }
+        public DbSet<UserNotes> Notes { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
