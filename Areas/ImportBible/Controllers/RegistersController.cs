@@ -12,6 +12,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
+using System.Text.Json;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -46,6 +47,17 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             return View();
         }
         // End Search
+
+        public string UpdateBooks(string version)
+        {
+            var bookList = _context.Books
+                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM bibles WHERE Version = '{version}' GROUP BY Book")
+                .ToList();
+
+            var listWithoutCol = bookList.Select(x => new { x.Book}).ToList();
+
+            return JsonSerializer.Serialize(listWithoutCol);
+        }
 
 
         // GET: ImportBible/Registers

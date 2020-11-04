@@ -55,4 +55,15 @@ namespace BibleAppEF.Areas.ImportBible.Models
         [Required]
         public string Notes { get; set; }
     }
+
+    [Table("bibles")]
+    public class Books
+    {
+        public int Id { get; set; }
+        public string Version { get; set; }
+        public string Book { get; set; }
+        public int Chapter { get; set; }
+        public int Verse { get; set; }
+
+    }
 }

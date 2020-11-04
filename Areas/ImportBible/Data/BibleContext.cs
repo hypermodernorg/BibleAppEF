@@ -14,6 +14,7 @@ namespace BibleAppEF.Areas.ImportBible.Data
         public DbSet<Register> Registers { get; set; }
         public DbSet<Bible> Bibles { get; set; }
         public DbSet<UserNotes> Notes { get; set; }
+        public DbSet<Books> Books { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
