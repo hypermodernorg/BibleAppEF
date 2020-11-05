@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System.Text.Json;
 
+
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
     [Area("ImportBible")]
@@ -48,6 +49,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         }
         // End Search
 
+        [HttpPost]
         public string UpdateBooks(string version)
         {
             var bookList = _context.Books
@@ -59,6 +61,30 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             return JsonSerializer.Serialize(listWithoutCol);
         }
 
+        [HttpPost]
+        public string UpdateChapters(string version, string book)
+        {
+            var chapterList = _context.Books
+                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM bibles WHERE Version = '{version}' and Book = '{book}' GROUP BY Chapter")
+                .ToList();
+
+            var listWithoutCol = chapterList.Select(x => new { x.Chapter }).ToList();
+
+            return JsonSerializer.Serialize(listWithoutCol);
+        }
+
+        [HttpPost]
+        public string UpdateVerses(string version, string book, string chapter)
+        {
+            var verseList = _context.Books
+                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM bibles WHERE Version = '{version}' and Book = '{book}' and Chapter = '{chapter}' GROUP BY Verse")
+                .ToList();
+
+            var listWithoutCol = verseList.Select(x => new { x.Verse }).ToList();
+
+
+            return JsonSerializer.Serialize(listWithoutCol);
+        }
 
         // GET: ImportBible/Registers
         public async Task<IActionResult> Index()

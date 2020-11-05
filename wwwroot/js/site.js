@@ -3,16 +3,16 @@
     $.ajax({
         type: "POST",
         url: '/Registers/UpdateBooks',
-        data: version,
-        contentType: "application/json; charset=utf-8",
-        dataType: "text",
+        data: { Version: version },
+        dataType: "json",
         success: function (jsonBooks) {
 
             booksSelect = document.getElementById("bookSelect");
             $("#bookSelect").empty();
+            $("#chapterSelect").empty();
+            $("#verseSelect").empty();
 
             for (var i in jsonBooks) {
-
 
                 var opt = document.createElement('option');
 
@@ -26,7 +26,6 @@
                 booksSelect.appendChild(opt); 
             }
 
-            alert(jsonBooks);
         },
         error: function (e) {
             alert('fail');
@@ -35,6 +34,74 @@
 
 }
 
+function onchangeBook() {
+    var version = document.getElementById("versionSelect").value;
+    var book = document.getElementById("bookSelect").value;
+    $.ajax({
+        type: "POST",
+        url: '/Registers/UpdateChapters',
+        data: { Version: version, Book: book },
+        dataType: "json",
+        success: function (jsonChapters) {
+
+            chapterSelect = document.getElementById("chapterSelect");
+            $("#chapterSelect").empty();
+            $("#verseSelect").empty();
+
+            for (var i in jsonChapters) {
+
+                var opt = document.createElement('option');
+
+                // create text node to add to option element (opt)
+                opt.appendChild(document.createTextNode(jsonChapters[i].Chapter));
+
+                // set value property of opt
+                opt.value = jsonChapters[i].Chapter;
+
+                // add opt to end of select box (sel)
+                chapterSelect.appendChild(opt);
+            }
+        },
+        error: function (e) {
+            alert('fail');
+        }
+    });
+
+}
+
+function onchangeChapter() {
+    var version = document.getElementById("versionSelect").value;
+    var book = document.getElementById("bookSelect").value;
+    var chapter = document.getElementById("chapterSelect").value;
+    $.ajax({
+        type: "POST",
+        url: '/Registers/UpdateVerses',
+        data: { Version: version, Book: book, Chapter: chapter },
+        dataType: "json",
+        success: function (jsonVerses) {
+
+            verseSelect = document.getElementById("verseSelect");
+            $("#verseSelect").empty();
+
+            for (var i in jsonVerses) {
+
+                var opt = document.createElement('option');
+
+                // create text node to add to option element (opt)
+                opt.appendChild(document.createTextNode(jsonVerses[i].Verse));
+
+                // set value property of opt
+                opt.value = jsonVerses[i].Verse;
+
+                // add opt to end of select box (sel)
+                verseSelect.appendChild(opt);
+            }
+        },
+        error: function (e) {
+            alert('fail');
+        }
+    });
+}
 
 // Callback from a <input type="file" onchange="onChange(event)">
 function onChange(event) {
