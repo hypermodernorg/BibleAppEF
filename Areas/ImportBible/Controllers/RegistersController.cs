@@ -13,7 +13,7 @@ using Microsoft.AspNetCore.Hosting;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System.Text.Json;
-
+using MySqlX.XDevAPI.Relational;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -49,16 +49,88 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         }
         // End Search
 
+
+        public string BuildQuery(string version, string book, string chapter, string verse, string wordstosearch)
+        {
+            string query = $"SELECT * FROM BIBLES WHERE Version = '{version}'";
+
+            if (book != null)
+            {
+                query += $" and Book = '{book}'";
+
+                if (chapter != null)
+                {
+                    query += $" and Chapter = '{chapter}'";
+                    if (verse != null)
+                    {
+                        query += $" and Verse = '{verse}'";
+                    }
+                }
+            }
+
+            if (wordstosearch != null)
+            {
+                query += $" and BibleText LIKE '%{wordstosearch}%'";
+            }
+
+            return query;
+        }
+
+        // Process Search
+        [HttpPost]
+        public string GetBible(string version, string book, string chapter, string verse, string wordstosearch)
+        {
+            string queryString = BuildQuery(version, book, chapter, verse, wordstosearch);
+
+            var bibleText = _context.Bibles
+                .FromSqlRaw(queryString)
+                .ToList();
+
+            string allText = "";
+
+            int chapterInt = 0;
+            string bookCheck = "";
+
+            foreach (var line in bibleText)
+            {
+                if (bookCheck != line.Book)
+                {
+
+                    allText += $"<div class='row'><div class='col text-center'><h5>{line.Book}</h5></div></div>";
+                    chapterInt = 0;
+                    bookCheck = line.Book;
+                }
+
+                if (chapterInt != line.Chapter)
+                {
+                    allText += $"<div class='row'><div class='col pt-4'><h5>Chapter {line.Chapter}</h5></div></div>";
+                    chapterInt = line.Chapter;
+                }
+
+                allText += "<div class = 'row'><div class = 'col-1 no-gutters pr-0'><small>" + line.Verse + "</small></div><div class='col-11 pl-0'>" + line.BibleText + "</div></div>";
+            }
+            return allText;
+        }
+        // End Process Search
+
+
         [HttpPost]
         public string UpdateBooks(string version)
         {
             var bookList = _context.Books
                 .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM bibles WHERE Version = '{version}' GROUP BY Book")
                 .ToList();
+            var bookWithoutCol = bookList.Select(x => new { x.Book }).ToList();
 
-            var listWithoutCol = bookList.Select(x => new { x.Book}).ToList();
+            var versionList = _context.Registers
+                .FromSqlRaw($"SELECT * FROM registers WHERE Abbreviation = '{version}'")
+                .ToList();
+            var versionWithoutCol = versionList.Select(x => new { x.Name}).ToList();
 
-            return JsonSerializer.Serialize(listWithoutCol);
+            var objects = new { BookList = bookWithoutCol, Version = versionWithoutCol };
+            //string result = new JavaScriptSerializer().Serialize(objects);
+
+            return JsonSerializer.Serialize(objects);
         }
 
         [HttpPost]

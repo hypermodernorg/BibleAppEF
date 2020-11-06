@@ -1,26 +1,30 @@
 ﻿function onchangeVersion() {
     var version = document.getElementById("versionSelect").value;
+    document.getElementById("versionHeader").innerText = version;
     $.ajax({
         type: "POST",
         url: '/Registers/UpdateBooks',
         data: { Version: version },
         dataType: "json",
-        success: function (jsonBooks) {
+        success: function (jsonObject) {
 
             booksSelect = document.getElementById("bookSelect");
+            document.getElementById("versionHeader").innerText = jsonObject.Version[0].Name;
             $("#bookSelect").empty();
             $("#chapterSelect").empty();
             $("#verseSelect").empty();
-
-            for (var i in jsonBooks) {
+            var optStart = document.createElement('option');
+            booksSelect.appendChild(optStart);
+            for (var i in jsonObject.BookList) {
 
                 var opt = document.createElement('option');
 
                 // create text node to add to option element (opt)
-                opt.appendChild(document.createTextNode(bookKeyValues(jsonBooks[i].Book)));
+                //opt.appendChild(document.createTextNode(bookKeyValues(jsonObject[i].Book)));
+                opt.appendChild(document.createTextNode(bookKeyValues(jsonObject.BookList[i].Book)));
 
                 // set value property of opt
-                opt.value = jsonBooks[i].Book;
+                opt.value = jsonObject.BookList[i].Book;
 
                 // add opt to end of select box (sel)
                 booksSelect.appendChild(opt); 
@@ -47,7 +51,8 @@ function onchangeBook() {
             chapterSelect = document.getElementById("chapterSelect");
             $("#chapterSelect").empty();
             $("#verseSelect").empty();
-
+            var optStart = document.createElement('option');
+            chapterSelect.appendChild(optStart);
             for (var i in jsonChapters) {
 
                 var opt = document.createElement('option');
@@ -82,6 +87,9 @@ function onchangeChapter() {
 
             verseSelect = document.getElementById("verseSelect");
             $("#verseSelect").empty();
+
+            var optStart = document.createElement('option');
+            verseSelect.appendChild(optStart);
 
             for (var i in jsonVerses) {
 
@@ -229,4 +237,29 @@ function bookKeyValues(book) {
         b86A: "Odes"
     };
     return bookkeyvalues[book];
+}
+
+function SubmitSearch() {
+
+    var version = document.getElementById("versionSelect").value;
+    var book = document.getElementById("bookSelect").value;
+    var chapter = document.getElementById("chapterSelect").value;
+    var verse = document.getElementById("verseSelect").value;
+    var wordstosearch = document.getElementById("SearchWords").value;
+    //document.getElementById("versionHeader").innerText = version;
+
+
+    $.ajax({
+        type: "POST",
+        url: '/Registers/GetBible',
+        data: { Version: version, Book: book, Chapter: chapter, Verse: verse, WordsToSearch: wordstosearch},
+        dataType: "html",
+        success: function (jsonObject) {
+            alert('great success');
+            document.getElementById("bibleText").innerHTML = jsonObject;
+        },
+        error: function (e) {
+            alert('fail');
+        }
+    });
 }

@@ -1,10 +1,11 @@
 ﻿@{  var availableVersions = ViewData.Model;
     Layout = "~/Views/Shared/_Layout.cshtml";
+    //@*asp-action="Create"*@ 
 }
 
-<form asp-action="Create" enctype="multipart/form-data">
+<form enctype="multipart/form-data">
     <div class="row">
-        <div class="col-4">
+        <div class="col-sm-4">
             <div class="card p-3">
                 <h3>Bible Search</h3>
                 <div class="row">
@@ -23,6 +24,7 @@
                             <select class="form-control" id="chapterSelect" onchange="onchangeChapter()">
                             </select>
                         </div>
+
                     </div>
                     <div class="col">
                         <div class="form-group">
@@ -36,21 +38,42 @@
                             <select class="form-control" id="verseSelect">
                             </select>
                         </div>
-                        <div class="form-group">
 
-                            <button type="submit" class="btn btn-primary bg-dark" onclick="SubmitSearch()">Submit</button>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Word or Phrase Search</label>
+                            <input type="text" id="SearchWords" />
                         </div>
                     </div>
                 </div>
-            </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="form-group">
+                            <button type="button" class="btn btn-primary bg-dark" onclick="SubmitSearch()">Submit</button>
+                        </div>
+                    </div>
+                </div>
+             </div>
         </div>
-        <div class="col-8">
+    
+        <div class="col-sm-8">
             <div class="card p-3 min-vh-100">
-                <h3>Genesis</h3>
+                <div class="row">
+                    <div class="col text-right">
+                        <h3 id="versionHeader"></h3>
+                    </div>
+                    
+                </div>
+
+                <div id="bibleText"></div>
+
             </div>
         </div>
 
-
+    </div>
 
 
 
