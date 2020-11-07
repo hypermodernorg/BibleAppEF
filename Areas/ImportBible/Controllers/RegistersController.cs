@@ -14,6 +14,7 @@ using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System.Text.Json;
 using MySqlX.XDevAPI.Relational;
+using Microsoft.CodeAnalysis;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -107,11 +108,40 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                     chapterInt = line.Chapter;
                 }
 
-                allText += "<div class = 'row'><div class = 'col-1 no-gutters pr-0'><small>" + line.Verse + "</small></div><div class='col-11 pl-0'>" + line.BibleText + "</div></div>";
+                allText += "<div class = 'row'><div class = 'col-1 no-gutters pr-0'><small>" + line.Verse + "</small></div><div class='col-11 pl-0'>" + ParseText(line.BibleText, wordstosearch) + "</div></div>";
             }
             return allText;
         }
         // End Process Search
+
+        public string ParseText(string text, string search)
+        {
+            string [] textArray = text.Split();
+            string newText = "";
+
+
+            const string pattern = @"\w[\w\d\W]*\w";
+            ////(\d{1,3}\w)\W(\d{1,3})\W(\d{1,3})\W{1,2}\d{1,7}\W{1}([\ \S*]*)";
+
+            //// Instantiate the regular expression object.
+            Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
+
+      
+
+            //if (m.Groups.Count >= 4)
+
+            foreach (var word in textArray)
+            {
+                Match m = r.Match(word);
+
+            }
+
+
+
+
+            return text;
+        }
+
 
         public string BookDictionary(string bookKey)
         {
