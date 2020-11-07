@@ -1,6 +1,6 @@
 ﻿function onchangeVersion() {
     var version = document.getElementById("versionSelect").value;
-    document.getElementById("versionHeader").innerText = version;
+    //document.getElementById("versionHeader").innerText = version;
     $.ajax({
         type: "POST",
         url: '/Registers/UpdateBooks',

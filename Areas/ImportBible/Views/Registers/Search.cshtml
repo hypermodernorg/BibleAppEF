@@ -13,6 +13,7 @@
                         <div class="form-group">
                             <label class="control-label">Version</label>
                             <select class="form-control" id="versionSelect" onchange="onchangeVersion()">
+                                <option></option>
                                 @foreach (var item in availableVersions)
                                 {
                                     <option>@item</option>
