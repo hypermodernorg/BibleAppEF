@@ -57,7 +57,7 @@ namespace BibleAppEF
                 endpoints.MapAreaControllerRoute(
                     areaName: "ImportBible",
                     name: "ImportBible",
-                    pattern: "{controller=Home}/{action=Index}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

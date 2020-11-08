@@ -32,7 +32,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
 
 
         // Search
-        public async Task<IActionResult> Search()
+        public async Task<IActionResult> Search(string? id)
         {
             List<string> versionList = new List<string>();
             var availableVersions = await _context.Registers.ToListAsync();
@@ -132,14 +132,13 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
 
             foreach (var word in textArray)
             {
-                Match m = r.Match(word);
+               Match m = r.Match(word);
+
+         
+                newText += $"<a href='/Registers/Search/{m}'>{word}</a> ";
 
             }
-
-
-
-
-            return text;
+            return newText;
         }
 
 
