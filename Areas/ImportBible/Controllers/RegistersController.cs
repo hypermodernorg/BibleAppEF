@@ -15,6 +15,7 @@ using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System.Text.Json;
 using MySqlX.XDevAPI.Relational;
 using Microsoft.CodeAnalysis;
+using Microsoft.AspNetCore.Razor.TagHelpers;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -51,7 +52,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         // End Search
 
 
-        public string BuildQuery(string version, string book, string chapter, string verse, string wordstosearch)
+        public string BuildQuery(string version, string book, string chapter, string verse, string wordstosearch, string searchmode, string nottosearch, string notmode)
         {
             string query = $"SELECT * FROM BIBLES WHERE Version = '{version}'";
 
@@ -69,19 +70,48 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 }
             }
 
+            // Begin figure out word search logical conditions.
+
+
+
             if (wordstosearch != null)
             {
+
+                if (searchmode == "phrase")
+                {
+                    query += $" and BibleText LIKE '%{wordstosearch}%'";
+                }
+                else if (searchmode == "and")
+                {
+                    var wtsArray = wordstosearch.Split().ToArray();
+                    foreach (string word in wtsArray)
+                    {
+                        query += $" and BibleText LIKE '%{word}%'";
+                    }
+
+                }
+                else if (searchmode == "or")
+                {
+                    var wtsArray = wordstosearch.Split().ToArray();
+                    foreach (string word in wtsArray)
+                    {
+                        query += $" and BibleText LIKE '%{word}%'";
+                    }
+                }
+
                 query += $" and BibleText LIKE '%{wordstosearch}%'";
             }
 
+
+            // End figure out word search logical contitions.
             return query;
         }
 
         // Process Search
         [HttpPost]
-        public string GetBible(string version, string book, string chapter, string verse, string wordstosearch)
+        public string GetBible(string version, string book, string chapter, string verse, string wordstosearch, string searchmode, string nottosearch, string notmode)
         {
-            string queryString = BuildQuery(version, book, chapter, verse, wordstosearch);
+            string queryString = BuildQuery(version, book, chapter, verse, wordstosearch, searchmode, nottosearch, notmode);
 
             var bibleText = _context.Bibles
                 .FromSqlRaw(queryString)
@@ -97,7 +127,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 if (bookCheck != line.Book)
                 {
 
-                    allText += $"<div class='row'><div class='col text-center'><h5>{BookDictionary(line.Book)}</h5></div></div>";
+                    allText += $"<div class='row'><div class='col pt-4 text-center'><h5>{BookDictionary(line.Book)}</h5></div></div>";
                     chapterInt = 0;
                     bookCheck = line.Book;
                 }
@@ -108,35 +138,106 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                     chapterInt = line.Chapter;
                 }
 
-                allText += "<div class = 'row'><div class = 'col-1 no-gutters pr-0'><small>" + line.Verse + "</small></div><div class='col-11 pl-0'>" + ParseText(line.BibleText, wordstosearch) + "</div></div>";
+
+
+                allText += "<div class = 'row'><div class = 'col-1 no-gutters pr-0'><small>" + line.Verse + "</small></div><div class='col-11 pl-0'>" + ParseText(line.BibleText, wordstosearch, searchmode) + "</div></div>";
             }
             return allText;
         }
         // End Process Search
 
-        public string ParseText(string text, string search)
+        // Todo: Research if mysql can have multiple search text criteria.
+        public string ParseText(string text, string search, string searchmode)
         {
             string [] textArray = text.Split();
             string newText = "";
+            
 
-
-            const string pattern = @"\w[\w\d\W]*\w";
-            ////(\d{1,3}\w)\W(\d{1,3})\W(\d{1,3})\W{1,2}\d{1,7}\W{1}([\ \S*]*)";
-
-            //// Instantiate the regular expression object.
-            Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
-
-      
-
-            //if (m.Groups.Count >= 4)
-
-            foreach (var word in textArray)
+            if (search != null)
             {
-               Match m = r.Match(word);
+                var searchArray = search.Split().ToArray();
+                //if (search.Split().ToArray().Length == 1) // If a single search word:
+                //{
+                const string pattern = @"\w[\w\d\W]*\w";
+                Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
 
-         
-                newText += $"<a href='/Registers/Search/{m}'>{word}</a> ";
+                // unless phrase with multiple search words has been chosen, do the following
+                if (searchmode == "and" || searchmode == "or" || search.Split().ToArray().Length == 1) {
+                    foreach (var word in textArray)
+                    {
+                        Match m = r.Match(word);
 
+                        if (m.Length > 3)
+                        {
+                            int i = 0;
+                            foreach (var searchWord in searchArray)
+                            {
+                                if (searchWord == m.ToString())
+                                {
+                                    newText += $"<a class=\"searchword\"onclick=\"LinkSearch('{m}');\">{word}</a> ";
+                                    i = 1;
+                                }
+                            }
+                            if (i == 0)
+                            {
+                                newText += $"<a onclick=\"LinkSearch('{m}');\">{word}</a> ";
+                            }
+                        }
+                        else
+                        {
+
+                            newText += $"{word} ";
+                        }
+                    }
+                }
+
+                // The final logical case is if phrase with multiple search words is chosen.
+                // In this case, splitting verses into an array of words will not work. Instead,
+                // we must use search and replace on the entire verse.\
+                // May need to explicitly condition this later. We shall see.
+                else
+                {
+                    string pattern2 = search;
+                    Regex r2 = new Regex(pattern2, RegexOptions.IgnoreCase);
+                    text.Replace(search, $"[{search}]");
+                    // As it is, there will be no individual work linking. How to resolve?
+                    // 1. first mark the phrase. It must be exact.
+                    // a. perhaps hyphens, or [word] or combination.
+                    // 2. next split verse into array split by marked phrase.
+                    // 3. Next attempt to ignore marked phrase while adding hyperlinks to 
+                    //      the other words.
+
+                    newText = text;
+                }
+
+
+
+                //}
+
+                //if (search.Split().ToArray().Length >1) // If multiple search words
+                //{
+                //}
+
+            }
+            else // If no search words
+            {
+                const string pattern = @"\w[\w\d\W]*\w";
+                Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
+                //if (m.Groups.Count >= 4)
+
+                foreach (var word in textArray)
+                {
+                    Match m = r.Match(word);
+
+                    if (m.Length > 3)
+                    {
+                        newText += $"<a onclick=\"LinkSearch('{m}');\">{word}</a> ";
+                    }
+                    else
+                    {
+                        newText += $"{word} ";
+                    }
+                }
             }
             return newText;
         }

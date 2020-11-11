@@ -77,3 +77,9 @@ body {
     overflow: hidden;
     white-space: nowrap;
 }
+
+.searchword {
+    background-color: rgb(40, 255, 255);
+    color: black;
+
+}

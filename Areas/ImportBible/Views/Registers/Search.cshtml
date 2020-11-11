@@ -1,12 +1,11 @@
 ﻿@{  var availableVersions = ViewData.Model;
     Layout = "~/Views/Shared/_Layout.cshtml";
-    //@*asp-action="Create"*@ 
 }
 
 <form enctype="multipart/form-data">
     <div class="row">
-        <div class="col-sm-4">
-            <div class="card p-3">
+        <div class="col-sm-4 collapse show" id="CollapseSearchForm">
+            <div class="card p-3" >
                 <h3>Bible Search</h3>
                 <div class="row">
                     <div class="col">
@@ -42,14 +41,61 @@
 
                     </div>
                 </div>
+                <hr />
                 <div class="row">
                     <div class="col">
+
                         <div class="form-group">
-                            <label class="control-label">Word or Phrase Search</label>
-                            <input type="text" id="SearchWords" />
+                            <label class="control-label">Search for..</label>
+                            <input type="text" id="SearchWords" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Conditions</label>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="searchPhrase" name="wordRadio" class="custom-control-input" value="phrase" checked="">
+                                <label class="custom-control-label" for="searchPhrase">Phrase</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="searchAnd" name="wordRadio" class="custom-control-input" value="and">
+                                <label class="custom-control-label" for="searchAnd">And</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="searchOr" name="wordRadio" class="custom-control-input"value="or">
+                                <label class="custom-control-label" for="searchOr">Or</label>
+                            </div>
                         </div>
                     </div>
                 </div>
+                <hr />
+                <div class="row">
+                    <div class="col">
+
+                        <div class="form-group">
+                            <label class="control-label">...but NOT</label>
+                            <input type="text" id="NotWords" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="col">
+                        <div class="form-group">
+                            <label class="control-label">Conditions</label>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="notPhrase" name="notRadio" class="custom-control-input" checked="" value="phrase">
+                                <label class="custom-control-label" for="notPhrase">Phrase</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="notAnd" name="notRadio" class="custom-control-input" value="and">
+                                <label class="custom-control-label" for="notAnd">And</label>
+                            </div>
+                            <div class="custom-control custom-radio">
+                                <input type="radio" id="notOr" name="notRadio" class="custom-control-input" value="or">
+                                <label class="custom-control-label" for="notOr">Or</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr />
                 <div class="row">
                     <div class="col">
                         <div class="form-group">
@@ -57,13 +103,19 @@
                         </div>
                     </div>
                 </div>
-             </div>
+            </div>
         </div>
     
-        <div class="col-sm-8">
+        <div class="col">
             <div class="card p-3 min-vh-100">
                 <div class="row">
-                    <div class="col text-right">
+                    <div class="col-2 text-left">
+                        <div class="custom-control custom-switch">
+                            <input type="checkbox" class="custom-control-input" id="customSwitch1" checked="" data-toggle="collapse" data-target="#CollapseSearchForm" aria-expanded="true" >
+                            <label class="custom-control-label" for="customSwitch1"></label>
+                        </div>
+                    </div>
+                    <div class="col-10 text-right">
                         <h3 id="versionHeader"></h3>
                     </div>
                     

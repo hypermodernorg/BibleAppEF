@@ -246,16 +246,40 @@ function SubmitSearch() {
     var chapter = document.getElementById("chapterSelect").value;
     var verse = document.getElementById("verseSelect").value;
     var wordstosearch = document.getElementById("SearchWords").value;
+    var nottosearch = document.getElementById("NotWords").value;
+    var searchmode = document.querySelector('input[name="wordRadio"]:checked').value
+    var notmode = document.querySelector('input[name="notRadio"]:checked').value
     //document.getElementById("versionHeader").innerText = version;
 
 
     $.ajax({
         type: "POST",
         url: '/Registers/GetBible',
-        data: { Version: version, Book: book, Chapter: chapter, Verse: verse, WordsToSearch: wordstosearch},
+        data: { Version: version, Book: book, Chapter: chapter, Verse: verse, WordsToSearch: wordstosearch, SearchMode: searchmode, NotMode: notmode, NotToSearch: nottosearch},
         dataType: "html",
         success: function (jsonObject) {
-            alert('great success');
+            //alert('great success');
+            document.getElementById("bibleText").innerHTML = jsonObject;
+        },
+        error: function (e) {
+            alert('fail');
+        }
+    });
+}
+function LinkSearch(searchwords) {
+
+    var version = document.getElementById("versionSelect").value;
+ 
+    //document.getElementById("versionHeader").innerText = version;
+
+
+    $.ajax({
+        type: "POST",
+        url: '/Registers/GetBible',
+        data: { Version: version, WordsToSearch: searchwords },
+        dataType: "html",
+        success: function (jsonObject) {
+            //alert('great success');
             document.getElementById("bibleText").innerHTML = jsonObject;
         },
         error: function (e) {
