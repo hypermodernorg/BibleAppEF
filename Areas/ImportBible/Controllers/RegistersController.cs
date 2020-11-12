@@ -16,6 +16,7 @@ using System.Text.Json;
 using MySqlX.XDevAPI.Relational;
 using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Razor.TagHelpers;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -54,7 +55,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
 
         public string BuildQuery(string version, string book, string chapter, string verse, string wordstosearch, string searchmode, string nottosearch, string notmode)
         {
-            string query = $"SELECT * FROM BIBLES WHERE Version = '{version}'";
+            string query = $"SELECT * FROM BIBLES WHERE (Version = '{version}')";
 
             if (book != null)
             {
@@ -70,40 +71,105 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 }
             }
 
-            // Begin figure out word search logical conditions.
-
-
-
             if (wordstosearch != null)
             {
-
-                if (searchmode == "phrase")
+                bool bor = false;
+                bool band = false;
+                if (searchmode == "phrase" || wordstosearch.Split().ToArray().Length < 2)
                 {
-                    query += $" and BibleText LIKE '%{wordstosearch}%'";
+                    query += $" AND BibleText LIKE '%{wordstosearch}%'";
                 }
-                else if (searchmode == "and")
-                {
-                    var wtsArray = wordstosearch.Split().ToArray();
-                    foreach (string word in wtsArray)
-                    {
-                        query += $" and BibleText LIKE '%{word}%'";
-                    }
-
-                }
-                else if (searchmode == "or")
+                else if (searchmode == "and" && wordstosearch.Split().ToArray().Length > 1)
                 {
                     var wtsArray = wordstosearch.Split().ToArray();
                     foreach (string word in wtsArray)
                     {
-                        query += $" and BibleText LIKE '%{word}%'";
+
+                        if (band == false)
+                        {
+                            query += $" AND (BibleText LIKE '%{word}%'";
+                            band = true;
+                        }
+                        else
+                        {
+                            query += $" AND BibleText LIKE '%{word}%'";
+                        }
+
+                   
                     }
+                    query += ")";
+
                 }
 
-                query += $" and BibleText LIKE '%{wordstosearch}%'";
+                // SELECT * FROM BIBLES WHERE (Version = 'asv') and (BibleText LIKE '%David%' or BibleText LIKE '%Jesus%');
+                else if (searchmode == "or" && wordstosearch.Split().ToArray().Length > 1)
+                {
+                    var wtsArray = wordstosearch.Split().ToArray();
+                    foreach (string word in wtsArray)
+                    {
+                        if (bor == false)
+                        {
+                            query += $" AND (BibleText LIKE '%{word}%'";
+                        }
+                        else
+                        {
+                            query += $" OR BibleText LIKE '%{word}%'";
+                        }
+                        bor = true;
+                    }
+                    query += ")";
+                }
             }
 
+            // Begin not to search
+            if (nottosearch != null)
+            {
+                bool bor = false;
+                bool band = false;
+                if (notmode == "phrase" || nottosearch.Split().ToArray().Length < 2)
+                {
+                    query += $" AND (BibleText NOT LIKE '%{nottosearch}%')";
+                }
+                else if (notmode == "and" && nottosearch.Split().ToArray().Length > 1)
+                {
+                    var wtsArray = nottosearch.Split().ToArray();
+                    foreach (string word in wtsArray)
+                    {
+                        if (band == false)
+                        {
+                            query += $" AND (BibleText NOT LIKE '%{word}%'";
+                            band = true;
+                        }
+                        else
+                        {
+                            query += $" AND BibleText NOT LIKE '%{word}%'";
+                        }
+                        
+                    }
+                    query += ")";
 
-            // End figure out word search logical contitions.
+                }
+
+                // SELECT * FROM BIBLES WHERE (Version = 'asv') and (BibleText LIKE '%David%' or BibleText LIKE '%Jesus%');
+                else if (notmode == "or" && nottosearch.Split().ToArray().Length > 1)
+                {
+                    var wtsArray = nottosearch.Split().ToArray();
+                    foreach (string word in wtsArray)
+                    {
+                        if (bor == false)
+                        {
+                            query += $" AND (BibleText NOT LIKE '%{word}%'";
+                        }
+                        else
+                        {
+                            query += $" OR BibleText NOT LIKE '%{word}%'";
+                        }
+                        bor = true;
+                    }
+                    query += ")";
+                }
+            } // End not to search
+
             return query;
         }
 
@@ -146,23 +212,17 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         }
         // End Process Search
 
-        // Todo: Research if mysql can have multiple search text criteria.
         public string ParseText(string text, string search, string searchmode)
         {
             string [] textArray = text.Split();
             string newText = "";
-            
 
             if (search != null)
             {
                 var searchArray = search.Split().ToArray();
-                //if (search.Split().ToArray().Length == 1) // If a single search word:
-                //{
                 const string pattern = @"\w[\w\d\W]*\w";
                 Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
-
-                // unless phrase with multiple search words has been chosen, do the following
-                if (searchmode == "and" || searchmode == "or" || search.Split().ToArray().Length == 1) {
+                //if (searchmode == "and" || searchmode == "or" || search.Split().ToArray().Length == 1) {
                     foreach (var word in textArray)
                     {
                         Match m = r.Match(word);
@@ -185,39 +245,10 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                         }
                         else
                         {
-
                             newText += $"{word} ";
                         }
                     }
-                }
-
-                // The final logical case is if phrase with multiple search words is chosen.
-                // In this case, splitting verses into an array of words will not work. Instead,
-                // we must use search and replace on the entire verse.\
-                // May need to explicitly condition this later. We shall see.
-                else
-                {
-                    string pattern2 = search;
-                    Regex r2 = new Regex(pattern2, RegexOptions.IgnoreCase);
-                    text.Replace(search, $"[{search}]");
-                    // As it is, there will be no individual work linking. How to resolve?
-                    // 1. first mark the phrase. It must be exact.
-                    // a. perhaps hyphens, or [word] or combination.
-                    // 2. next split verse into array split by marked phrase.
-                    // 3. Next attempt to ignore marked phrase while adding hyperlinks to 
-                    //      the other words.
-
-                    newText = text;
-                }
-
-
-
                 //}
-
-                //if (search.Split().ToArray().Length >1) // If multiple search words
-                //{
-                //}
-
             }
             else // If no search words
             {
