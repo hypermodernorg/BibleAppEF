@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Scaffolding;
 using BibleAppEF.Areas.ImportBible.Models;
 using Newtonsoft.Json.Linq;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 
 namespace BibleAppEF.Areas.ImportBible.Data
 {
@@ -18,7 +19,13 @@ namespace BibleAppEF.Areas.ImportBible.Data
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;uid=root;pwd=Nisarascalcj1!r;database=biblebase");
+            optionsBuilder
+                .UseMySql("server=localhost;uid=root;pwd=Nisarascalcj1!r;database=biblebase",
+                   MySqlServerVersion.LatestSupportedServerVersion,
+                        mySqlOptions => mySqlOptions
+                            .CharSetBehavior(CharSetBehavior.NeverAppend))
+                .EnableDetailedErrors()
+                .EnableSensitiveDataLogging();
         }
     }
 }

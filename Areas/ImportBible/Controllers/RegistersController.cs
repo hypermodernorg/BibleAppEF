@@ -13,7 +13,6 @@ using Microsoft.AspNetCore.Hosting;
 using System.Text.RegularExpressions;
 using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
 using System.Text.Json;
-using MySqlX.XDevAPI.Relational;
 using Microsoft.CodeAnalysis;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -185,7 +184,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
 
             string allText = "";
 
-            int chapterInt = 0;
+            string chapterInt = "";
             string bookCheck = "";
 
             foreach (var line in bibleText)
@@ -194,7 +193,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 {
 
                     allText += $"<div class='row'><div class='col pt-4 text-center'><h5>{BookDictionary(line.Book)}</h5></div></div>";
-                    chapterInt = 0;
+                    chapterInt = "";
                     bookCheck = line.Book;
                 }
 
@@ -466,8 +465,8 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                     bible.Version = register.Abbreviation;
                     bible.BookChapterVerse = m.Groups[1].ToString() + "|" +m.Groups[2].ToString() + "|" + m.Groups[3].ToString();
                     bible.Book = m.Groups[1].ToString();
-                    bible.Chapter = int.Parse(m.Groups[2].ToString());
-                    bible.Verse = int.Parse(m.Groups[3].ToString());
+                    bible.Chapter = m.Groups[2].ToString();
+                    bible.Verse = m.Groups[3].ToString();
                     bible.BibleText = m.Groups[4].ToString();
                     bibleContext.Add(bible);
                     await bibleContext.SaveChangesAsync();

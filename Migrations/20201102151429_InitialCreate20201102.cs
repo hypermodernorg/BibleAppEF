@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore.Migrations;
-using MySql.Data.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Pomelo.EntityFrameworkCore.MySql;
 
 namespace BibleAppEF.Migrations
 {
@@ -12,7 +13,8 @@ namespace BibleAppEF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
+                 
                     Version = table.Column<string>(type: "varchar(40)", nullable: false),
                     BookChapterVerse = table.Column<string>(type: "varchar(100)", nullable: true),
                     Book = table.Column<string>(type: "varchar(40)", nullable: true),
@@ -30,7 +32,7 @@ namespace BibleAppEF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     UID = table.Column<int>(nullable: false),
                     Version = table.Column<string>(type: "varchar(40)", nullable: true),
                     BookChapterVerse = table.Column<string>(type: "varchar(100)", nullable: false),
@@ -46,7 +48,7 @@ namespace BibleAppEF.Migrations
                 columns: table => new
                 {
                     Id = table.Column<int>(nullable: false)
-                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                        .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
                     Source = table.Column<string>(type: "varchar(200)", nullable: true),
                     Name = table.Column<string>(type: "varchar(100)", nullable: false),
                     FileType = table.Column<string>(type: "varchar(200)", nullable: true),

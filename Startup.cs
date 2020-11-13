@@ -11,6 +11,8 @@ using Microsoft.Extensions.Hosting;
 using BibleAppEF.Areas.ImportBible.Models;
 using Microsoft.EntityFrameworkCore;
 using BibleAppEF.Areas.ImportBible.Data;
+using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
+using Pomelo.EntityFrameworkCore.MySql;
 
 namespace BibleAppEF
 {
@@ -30,6 +32,21 @@ namespace BibleAppEF
             services.AddRazorPages();
           
             services.AddDbContext<BibleContext, BibleContext>();
+            // Replace "YourDbContext" with the name of your own DbContext derived class.
+            //services.AddDbContextPool<BibleContext>(
+            //    dbContextOptions => dbContextOptions
+            //        .UseMySql(
+            //            // Replace with your connection string.
+            //            "server=localhost;user=root;password=Nisarascalcj1!r;database=biblebase",
+            //            // Replace with your server version and type.
+            //            // For common usages, see pull request #1233.
+            //            MySqlServerVersion.LatestSupportedServerVersion,   //(8, 0, 21), // use MariaDbServerVersion for MariaDB
+            //            mySqlOptions => mySqlOptions
+            //                .CharSetBehavior(CharSetBehavior.NeverAppend))
+            //        // Everything from this point on is optional but helps with debugging.
+            //        .EnableSensitiveDataLogging()
+            //        .EnableDetailedErrors()
+            //);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

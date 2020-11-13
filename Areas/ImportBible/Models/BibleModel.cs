@@ -37,9 +37,9 @@ namespace BibleAppEF.Areas.ImportBible.Models
         [Column(TypeName = "varchar(40)")]
         public string Book { get; set; }
         [Column(TypeName = "varchar(40)")]
-        public int Chapter { get; set; }
+        public string Chapter { get; set; }
         [Column(TypeName = "varchar(40)")]
-        public int Verse { get; set; }
+        public string Verse { get; set; }
         public string BibleText { get; set; }
     }
 
@@ -62,8 +62,8 @@ namespace BibleAppEF.Areas.ImportBible.Models
         public int Id { get; set; }
         public string Version { get; set; }
         public string Book { get; set; }
-        public int Chapter { get; set; }
-        public int Verse { get; set; }
+        public string Chapter { get; set; }
+        public string Verse { get; set; }
 
     }
 }
