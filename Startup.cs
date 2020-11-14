@@ -32,21 +32,6 @@ namespace BibleAppEF
             services.AddRazorPages();
           
             services.AddDbContext<BibleContext, BibleContext>();
-            // Replace "YourDbContext" with the name of your own DbContext derived class.
-            //services.AddDbContextPool<BibleContext>(
-            //    dbContextOptions => dbContextOptions
-            //        .UseMySql(
-            //            // Replace with your connection string.
-            //            "server=localhost;user=root;password=Nisarascalcj1!r;database=biblebase",
-            //            // Replace with your server version and type.
-            //            // For common usages, see pull request #1233.
-            //            MySqlServerVersion.LatestSupportedServerVersion,   //(8, 0, 21), // use MariaDbServerVersion for MariaDB
-            //            mySqlOptions => mySqlOptions
-            //                .CharSetBehavior(CharSetBehavior.NeverAppend))
-            //        // Everything from this point on is optional but helps with debugging.
-            //        .EnableSensitiveDataLogging()
-            //        .EnableDetailedErrors()
-            //);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -59,18 +44,17 @@ namespace BibleAppEF
             else
             {
                 app.UseExceptionHandler("/Home/Error");
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
+
             app.UseHttpsRedirection();
             app.UseStaticFiles();
-
             app.UseRouting();
-
+            app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints =>
             {
+                endpoints.MapRazorPages();
                 endpoints.MapAreaControllerRoute(
                     areaName: "ImportBible",
                     name: "ImportBible",
@@ -78,10 +62,7 @@ namespace BibleAppEF
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
             });
-
         }
     }
 }
