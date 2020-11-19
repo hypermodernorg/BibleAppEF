@@ -21,6 +21,9 @@ namespace BibleAppEF.Areas.Identity
                         context.Configuration.GetConnectionString("IdentityContextConnection")));
 
                 services.AddDefaultIdentity<BibleAppEFUser>(options => options.SignIn.RequireConfirmedAccount = true)
+                    .AddRoles<IdentityRole>()
+                    .AddRoleManager<RoleManager<IdentityRole>>()
+                    .AddDefaultUI()
                     .AddEntityFrameworkStores<IdentityContext>();
             });
         }

@@ -55,10 +55,15 @@ namespace BibleAppEF
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapRazorPages();
+
+                //endpoints.MapAreaControllerRoute(
+                //    areaName: "ImportBible",
+                //    name: "ImportBible",
+                //    pattern: "{area=ImportBible}/{Controller=Registers}/{action=Search}/{id?}");
                 endpoints.MapAreaControllerRoute(
-                    areaName: "ImportBible",
-                    name: "ImportBible",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    areaName: "areas",
+                    name: "areas",
+                    pattern: "{area:exists}/{Controller=Default}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -1,0 +1,14 @@
+﻿@page
+@model BibleAppEF.Areas.Identity.Pages.Admin.Roles.IndexModel
+    @{
+      
+
+    }
+    <h3>@Model.User.Identity.Name</h3>
+
+    @foreach (KeyValuePair<string, string> role in Model.AllRoles)
+    {
+        <h4>@role.Value</h4>
+    }
+
+

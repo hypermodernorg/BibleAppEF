@@ -20,6 +20,7 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
     [Area("ImportBible")]
+    [Route("ImportBible/[controller]/[action]")]
     public class RegistersController : Controller
     {
         private readonly BibleContext _context;
