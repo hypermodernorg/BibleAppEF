@@ -37,5 +37,31 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             AllRoles = Roles;
             return Page();
         }
+
+        public async void Add(string NewRole)
+        {
+            IdentityRole role = new IdentityRole();
+            role.Name = NewRole;
+            await _roleManager.CreateAsync(role);
+        }
+
+        public IActionResult OnPost(string NewRole)
+        {
+            Add(NewRole);
+            return RedirectToPage();
+        }
+
+        public async void Deleted(string RoleId)
+        {
+            IdentityRole theRole = await _roleManager.FindByIdAsync(RoleId);
+            await _roleManager.DeleteAsync(theRole);
+        }
+
+
+        public IActionResult OnPostDelete(string RoleId)
+        {
+            Deleted(RoleId);
+            return RedirectToPage();
+        }
     }
 }

@@ -1,14 +1,49 @@
 ﻿@page
 @model BibleAppEF.Areas.Identity.Pages.Admin.Roles.IndexModel
-    @{
-      
+@{
 
-    }
-    <h3>@Model.User.Identity.Name</h3>
+    // Todo: Send data to codebehind via ajax as a workaround for multipe elements with the same name attributes limitations.
+}
+<h3>List of Roles</h3>
+
+<form method="post" asp-page-handler="post">
+    <div class="row">
+        <div class="col-12">
+            <input type="text" name="NewRole" />
+            <button asp-page="/Admin/Roles/Index">Add New Role</button>
+        </div>
+    </div>
+</form>
+<hr />
+<div class="row border-dark">
+    <div class="col-4 text-center">
+        <h4>ID</h4>
+    </div>
+    <div class="col-4 text-center">
+        <h4>Name</h4>
+    </div>
+    <div class="col-4">
+        <h4>Utility</h4>
+    </div>
+</div>
+<form method="post" asp-page-handler="delete">
 
     @foreach (KeyValuePair<string, string> role in Model.AllRoles)
     {
-        <h4>@role.Value</h4>
+
+
+        <div class="row border-dark">
+            <div class="col-6">@role.Key</div>
+            <div class="col-4">@role.Value</div>
+            <div class="col-2">
+
+                <button asp-page="/Admin/Roles/Index">Delete</button>
+                <input id="@role.Key" name="RoleId" type="hidden" value="@role.Key" />
+
+            </div>
+        </div>
+
     }
+</form>
 
 
