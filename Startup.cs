@@ -13,6 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using BibleAppEF.Areas.ImportBible.Data;
 using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
 using Pomelo.EntityFrameworkCore.MySql;
+using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 
 namespace BibleAppEF
 {
@@ -29,9 +30,13 @@ namespace BibleAppEF
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddControllersWithViews();
-            services.AddRazorPages();
+            services.AddRazorPages()
+                .AddRazorRuntimeCompilation();
           
             services.AddDbContext<BibleContext, BibleContext>();
+            services.AddAntiforgery(o => o.HeaderName = "BIBLEAPP-TOKEN");
+ 
+       
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

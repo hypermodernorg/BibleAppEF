@@ -1,4 +1,16 @@
-﻿function onchangeVersion() {
+﻿function DeleteRole(RoleId) {
+    $.ajax({
+        type: "POST",
+        url: '/Identity/Admin/Roles?handler=Delete',
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("BIBLEAPP-TOKEN",
+                $('input:hidden[name="__RequestVerificationToken"]').val());
+        },
+        data: { RoleId: RoleId }
+    });
+}
+
+function onchangeVersion() {
     var version = document.getElementById("versionSelect").value;
     //document.getElementById("versionHeader").innerText = version;
     $.ajax({
@@ -266,6 +278,7 @@ function SubmitSearch() {
         }
     });
 }
+
 function LinkSearch(searchwords) {
 
     var version = document.getElementById("versionSelect").value;

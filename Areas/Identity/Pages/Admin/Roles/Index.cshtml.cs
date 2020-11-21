@@ -27,7 +27,12 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         public Dictionary<string, string> AllRoles { get; set; }
 
         public IActionResult OnGet() {
+            AllRoles = AllTheRoles();
+            return Page();
+        }
 
+        public Dictionary<string, string> AllTheRoles()
+        {
             Dictionary<string, string> Roles = new Dictionary<string, string>();
             foreach (var role in _roleManager.Roles)
             {
@@ -35,7 +40,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             }
 
             AllRoles = Roles;
-            return Page();
+            return Roles;
         }
 
         public async void Add(string NewRole)
@@ -55,12 +60,15 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         {
             IdentityRole theRole = await _roleManager.FindByIdAsync(RoleId);
             await _roleManager.DeleteAsync(theRole);
+            await Task.Delay(200000);
         }
 
-
+        
         public IActionResult OnPostDelete(string RoleId)
         {
             Deleted(RoleId);
+            AllRoles = AllTheRoles();
+            
             return RedirectToPage();
         }
     }
