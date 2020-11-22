@@ -43,32 +43,28 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             return Roles;
         }
 
-        public async void Add(string NewRole)
+        public async Task<IActionResult> OnPost(string NewRole)
         {
-            IdentityRole role = new IdentityRole();
-            role.Name = NewRole;
+            IdentityRole role = new IdentityRole
+            {
+                Name = NewRole,
+                NormalizedName = NewRole.ToUpper()
+            };
             await _roleManager.CreateAsync(role);
-        }
-
-        public IActionResult OnPost(string NewRole)
-        {
-            Add(NewRole);
+            AllRoles = AllTheRoles();
             return RedirectToPage();
         }
 
-        public async void Deleted(string RoleId)
+        // Because the below will not update the page, item is removed through 
+        // site.js javascript function DeleteRole(). May come back to this later
+        // for a better solution
+        public async Task<IActionResult> OnPostDelete(string RoleId)
         {
-            IdentityRole theRole = await _roleManager.FindByIdAsync(RoleId);
+            var test = RoleId;
+            IdentityRole theRole = await _roleManager.FindByIdAsync(RoleId).ConfigureAwait(false);
             await _roleManager.DeleteAsync(theRole);
-            await Task.Delay(200000);
-        }
-
-        
-        public IActionResult OnPostDelete(string RoleId)
-        {
-            Deleted(RoleId);
             AllRoles = AllTheRoles();
-            
+           
             return RedirectToPage();
         }
     }
