@@ -1,52 +1,22 @@
 ﻿
-function UpdateRole(RoleId) {
+//function DeleteRole(RoleId) {
 
-    $.ajax({
-        type: "POST",
-        url: '/Identity/Admin/Roles/Edit?handler=Update',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("BIBLEAPP-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { RoleId: RoleId }
-    });
-}
+//    // First item created for some reason first element created cannot be removed from page due to
+//    // invalidRoleName error even though it is deleted in the database. Therefore, remove it manually 
+//    // here.
+//    var roletodelete = document.getElementById(RoleId);
+//    roletodelete.remove();
 
-
-function UpdateRole2(RoleId) {
-
-    var NEWNAME = document.getElementById(newName).value;
-    //roletodelete.remove();
-
-    $.ajax({
-        type: "POST",
-        url: '/Identity/Admin/Roles/Edit?handler=Update2',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("BIBLEAPP-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { RoleId: RoleId, NewName: NEWNAME }
-    });
-}
-
-function DeleteRole(RoleId) {
-
-    // First item created for some reason first element created cannot be removed from page due to
-    // invalidRoleName error even though it is deleted in the database. Therefore, remove it manually 
-    // here.
-    var roletodelete = document.getElementById(RoleId);
-    roletodelete.remove();
-
-    $.ajax({
-        type: "POST",
-        url: '/Identity/Admin/Roles?handler=Delete',
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("BIBLEAPP-TOKEN",
-                $('input:hidden[name="__RequestVerificationToken"]').val());
-        },
-        data: { RoleId: RoleId }
-    });
-}
+//    $.ajax({
+//        type: "POST",
+//        url: '/Identity/Admin/Roles?handler=Delete',
+//        beforeSend: function (xhr) {
+//            xhr.setRequestHeader("BIBLEAPP-TOKEN",
+//                $('input:hidden[name="__RequestVerificationToken"]').val());
+//        },
+//        data: { RoleId: RoleId }
+//    });
+//}
 
 function onchangeVersion() {
     var version = document.getElementById("versionSelect").value;

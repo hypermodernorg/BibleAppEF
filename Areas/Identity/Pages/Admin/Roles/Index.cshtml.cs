@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 {
+    [IgnoreAntiforgeryToken(Order = 1001)]
     public class IndexModel : PageModel
     {
         private readonly UserManager<BibleAppEFUser> _userManager;
@@ -43,7 +44,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             return Roles;
         }
 
-        public async Task<IActionResult> OnPost(string NewRole)
+        public async Task<IActionResult> OnPostAdd(string NewRole)
         {
             IdentityRole role = new IdentityRole
             {
@@ -52,19 +53,24 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             };
             await _roleManager.CreateAsync(role);
             AllRoles = AllTheRoles();
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostDelete(string RoleToDelete)
+        {
+            IdentityRole theRole = await _roleManager.FindByIdAsync(RoleToDelete);
+            await _roleManager.DeleteAsync(theRole);
+            AllRoles = AllTheRoles();
+
             return RedirectToPage();
         }
 
-        // Because the below will not update the page, item is removed through 
-        // site.js javascript function DeleteRole(). May come back to this later
-        // for a better solution
-        public async Task<IActionResult> OnPostDelete(string RoleId)
+        public async Task<IActionResult> OnPostUpdate(string UpdateRole)
         {
-            var test = RoleId;
-            IdentityRole theRole = await _roleManager.FindByIdAsync(RoleId).ConfigureAwait(false);
-            await _roleManager.DeleteAsync(theRole);
+            IdentityRole theRole = await _roleManager.FindByIdAsync(UpdateRole);
+            await _roleManager.UpdateAsync(theRole);
             AllRoles = AllTheRoles();
-           
+
             return RedirectToPage();
         }
     }
