@@ -1,29 +1,9 @@
-﻿
-//function DeleteRole(RoleId) {
-
-//    // First item created for some reason first element created cannot be removed from page due to
-//    // invalidRoleName error even though it is deleted in the database. Therefore, remove it manually 
-//    // here.
-//    var roletodelete = document.getElementById(RoleId);
-//    roletodelete.remove();
-
-//    $.ajax({
-//        type: "POST",
-//        url: '/Identity/Admin/Roles?handler=Delete',
-//        beforeSend: function (xhr) {
-//            xhr.setRequestHeader("BIBLEAPP-TOKEN",
-//                $('input:hidden[name="__RequestVerificationToken"]').val());
-//        },
-//        data: { RoleId: RoleId }
-//    });
-//}
-
-function onchangeVersion() {
+﻿function onchangeVersion() {
     var version = document.getElementById("versionSelect").value;
     //document.getElementById("versionHeader").innerText = version;
     $.ajax({
         type: "POST",
-        url: '/Registers/UpdateBooks',
+        url: '/ImportBible/Registers/UpdateBooks',
         data: { Version: version },
         dataType: "json",
         success: function (jsonObject) {
@@ -63,7 +43,7 @@ function onchangeBook() {
     var book = document.getElementById("bookSelect").value;
     $.ajax({
         type: "POST",
-        url: '/Registers/UpdateChapters',
+        url: '/ImportBible/Registers/UpdateChapters',
         data: { Version: version, Book: book },
         dataType: "json",
         success: function (jsonChapters) {
@@ -100,7 +80,7 @@ function onchangeChapter() {
     var chapter = document.getElementById("chapterSelect").value;
     $.ajax({
         type: "POST",
-        url: '/Registers/UpdateVerses',
+        url: '/ImportBible/Registers/UpdateVerses',
         data: { Version: version, Book: book, Chapter: chapter },
         dataType: "json",
         success: function (jsonVerses) {
@@ -274,7 +254,7 @@ function SubmitSearch() {
 
     $.ajax({
         type: "POST",
-        url: '/Registers/GetBible',
+        url: '/ImportBible/Registers/GetBible',
         data: { Version: version, Book: book, Chapter: chapter, Verse: verse, WordsToSearch: wordstosearch, SearchMode: searchmode, NotMode: notmode, NotToSearch: nottosearch},
         dataType: "html",
         success: function (jsonObject) {
@@ -296,7 +276,7 @@ function LinkSearch(searchwords) {
 
     $.ajax({
         type: "POST",
-        url: '/Registers/GetBible',
+        url: '/ImportBible/Registers/GetBible',
         data: { Version: version, WordsToSearch: searchwords },
         dataType: "html",
         success: function (jsonObject) {

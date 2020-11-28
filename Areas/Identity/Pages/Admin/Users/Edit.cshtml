@@ -1,0 +1,39 @@
+﻿@page
+@model BibleAppEF.Areas.Identity.Pages.Admin.Users.EditModel
+@{
+    <form method="post">
+        <div class="row">
+            <div class="col">
+                <label>User Name: </label>
+            </div>
+            <div class="col">
+                @Model.GetUser.UserName
+            </div>
+            <div class="col">
+                <input type="text" name="name" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Email: </label>
+            </div>
+            <div class="col">
+                @Model.GetUser.Email
+            </div>
+            <div class="col">
+                <input type="email" name="email" />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col">
+                <label>Role: </label>
+            </div>
+            <div class="col">
+                <select asp-for="selectedRole" asp-items="Model.Options">
+
+                </select>
+
+            </div>
+        </div>
+    </form>
+}
