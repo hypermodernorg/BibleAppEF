@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="Areas\Identity\Pages\Admin\EditRoles\**" />
+    <Content Remove="Areas\Identity\Pages\Admin\EditRoles\**" />
+    <EmbeddedResource Remove="Areas\Identity\Pages\Admin\EditRoles\**" />
+    <None Remove="Areas\Identity\Pages\Admin\EditRoles\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.EntityFrameworkCore" Version="5.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity.UI" Version="5.0.0" />
@@ -29,7 +36,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="Areas\Identity\Pages\Admin\EditRoles\" />
     <Folder Include="wwwroot\uploads\" />
   </ItemGroup>
 

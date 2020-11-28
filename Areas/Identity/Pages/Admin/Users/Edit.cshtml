@@ -29,11 +29,16 @@
                 <label>Role: </label>
             </div>
             <div class="col">
-                <select asp-for="selectedRole" asp-items="Model.Options">
-
+                <select asp-for="selectedRole" asp-items="Model.Options" name="role">
+                    <option value="">Select a Role</option>
+                  
                 </select>
 
             </div>
+        </div>
+        <div class="row">
+            <input type="hidden" name="userid" value="@Model.GetUser.Id"/>
+            <button asp-page-handler="Update">Update</button>
         </div>
     </form>
 }
