@@ -1,44 +1,61 @@
 ﻿@page
 @model BibleAppEF.Areas.Identity.Pages.Admin.Users.EditModel
 @{
+    <h3>Details for @Model.GetUser.UserName</h3>
+    <hr />
     <form method="post">
         <div class="row">
-            <div class="col">
+            <div class="col-2">
+                <label>Id:</label>
+            </div>
+            <div class="col-5">
+                @Model.GetUser.Id
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-2">
                 <label>User Name: </label>
             </div>
-            <div class="col">
+            <div class="col-5">
                 @Model.GetUser.UserName
             </div>
-            <div class="col">
-                <input type="text" name="name" />
+            <div class="col-5">
+                <input type="text" name="name" placeholder="Change User Name..." />
             </div>
         </div>
+        <hr />
         <div class="row">
-            <div class="col">
+            <div class="col-2">
                 <label>Email: </label>
             </div>
-            <div class="col">
+            <div class="col-5">
                 @Model.GetUser.Email
             </div>
-            <div class="col">
-                <input type="email" name="email" />
+            <div class="col-5">
+                <input type="email" name="email" placeholder="new@user.email" />
             </div>
         </div>
+        <hr />
         <div class="row">
-            <div class="col">
+            <div class="col-2">
                 <label>Role: </label>
             </div>
-            <div class="col">
-                <select asp-for="selectedRole" asp-items="Model.Options" name="role">
-                    <option value="">Select a Role</option>
-                  
-                </select>
+            <div class="col-5">
 
             </div>
-        </div>
-        <div class="row">
-            <input type="hidden" name="userid" value="@Model.GetUser.Id"/>
-            <button asp-page-handler="Update">Update</button>
-        </div>
-    </form>
+                <div class="col-5">
+                    <select asp-for="selectedRole" asp-items="Model.Options" name="role">
+                        <option value="">Select a Role</option>
+
+                    </select>
+
+                </div>
+            </div>
+            <hr />
+            <div class="row">
+                <input type="hidden" name="userid" value="@Model.GetUser.Id" />
+                <button asp-page-handler="Update">Update</button>
+            </div>
+</form>
 }

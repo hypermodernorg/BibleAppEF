@@ -1,0 +1,36 @@
+﻿@page
+@model BibleAppEF.Areas.Identity.Pages.Admin.Roles.EditModel
+@{
+    <h3>Details for the Role: @Model.GetRole.Name</h3>
+    <hr />
+    <form method="post">
+        <div class="row">
+            <div class="col-2">
+                <label>Role Id: </label>
+            </div>
+            <div class="col-5">
+                @Model.GetRole.Id
+            </div>
+            <div class="col-5">
+
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <div class="col-2">
+                <label>Role Name: </label>
+            </div>
+            <div class="col-5">
+                @Model.GetRole.Name
+            </div>
+            <div class="col-5">
+                <input type="text" name="roleName"/>
+            </div>
+        </div>
+        <hr />
+        <div class="row">
+            <input type="hidden" name="roleId" value="@Model.GetRole.Id"/>
+            <button asp-page-handler="Update">Update</button>
+        </div>
+    </form>
+}

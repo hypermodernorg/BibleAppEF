@@ -56,22 +56,22 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             return Page();
         }
 
-        public async Task<IActionResult> OnPostDelete(string RoleToDelete)
+        public async Task<IActionResult> OnPostDelete(string updateRole)
         {
-            IdentityRole theRole = await _roleManager.FindByIdAsync(RoleToDelete);
+            IdentityRole theRole = await _roleManager.FindByIdAsync(updateRole);
             await _roleManager.DeleteAsync(theRole);
             AllRoles = AllTheRoles();
 
             return RedirectToPage();
         }
 
-        public async Task<IActionResult> OnPostUpdate(string UpdateRole)
-        {
-            IdentityRole theRole = await _roleManager.FindByIdAsync(UpdateRole);
-            await _roleManager.UpdateAsync(theRole);
-            AllRoles = AllTheRoles();
+        [TempData]
+        public string UpdateRole { get; set; }
 
-            return RedirectToPage();
+        public IActionResult OnPostEdit(string updateRole)
+        {
+            UpdateRole = updateRole;
+            return RedirectToPage($"Edit", "Get");
         }
     }
 }
