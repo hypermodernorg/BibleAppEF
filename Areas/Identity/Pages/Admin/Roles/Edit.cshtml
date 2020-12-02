@@ -29,8 +29,11 @@
         </div>
         <hr />
         <div class="row">
-            <input type="hidden" name="roleId" value="@Model.GetRole.Id"/>
-            <button asp-page-handler="Update">Update</button>
+            <div class="col">
+                <input type="hidden" name="roleId" value="@Model.GetRole.Id" />
+                <button asp-page-handler="Update">Update</button>
+            </div>
+
         </div>
     </form>
 }

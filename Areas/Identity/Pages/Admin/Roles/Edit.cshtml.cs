@@ -26,7 +26,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         }
 
         public IdentityRole GetRole;
-        public async Task<IActionResult> OnGetAsync() //not gonna delete here, change var name later.
+        public async Task<IActionResult> OnGetAsync()
         {
             var RoleToUpdate = TempData["UpdateRole"].ToString();
             GetRole = await _roleManager.FindByIdAsync(RoleToUpdate);
