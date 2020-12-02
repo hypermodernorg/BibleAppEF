@@ -1,5 +1,3 @@
-using System;
-
 namespace BibleAppEF.Models
 {
     public class ErrorViewModel

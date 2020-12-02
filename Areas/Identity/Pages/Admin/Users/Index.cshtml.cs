@@ -1,14 +1,12 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using BibleAppEF.Areas.Identity.Data;
 using BibleAppEF.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 {
@@ -31,7 +29,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
         {
             // get all the users. usermanager is useless to get the list, therefore,
             // use usermanager's parent.
-            var getUsers = await  _context.Users.Select(x => x.UserName).ToListAsync();
+            var getUsers = await _context.Users.Select(x => x.UserName).ToListAsync();
             Dictionary<string, string> getusers = new Dictionary<string, string>();
             foreach (var user in getUsers)
             {
@@ -47,7 +45,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
                 else
                 {
                     getusers.Add(IUser.UserName, "none");
-                  
+
                 }
             }
             GetUsers = getusers;

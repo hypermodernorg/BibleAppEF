@@ -1,15 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using BibleAppEF.Areas.Identity.Data;
-using BibleAppEF.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 {
@@ -17,7 +13,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
     {
         private readonly UserManager<BibleAppEFUser> _userManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        
+
 
         public EditModel(UserManager<BibleAppEFUser> userManager, RoleManager<IdentityRole> roleManager)
         {
@@ -37,14 +33,14 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
             GetUser = user;
 
             var Roles = _roleManager.Roles.ToList();
-            
+
 
             if (roles.Count == 0)
             {
                 Options = new List<SelectListItem>();
                 foreach (var role in Roles)
                 {
-                   
+
                     Options.Add(new SelectListItem { Value = role.Name, Text = role.Name });
 
                 }
@@ -63,7 +59,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
                     {
                         Options.Add(new SelectListItem { Value = role.Name, Text = role.Name });
 
-                    }              
+                    }
                 }
             }
 
@@ -79,14 +75,14 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
             {
                 await _userManager.RemoveFromRoleAsync(user, roles[0]);
             }
-     
+
 
             if (role != "" && role != null)
             {
                 await _userManager.AddToRoleAsync(user, role);
             }
-            
-            
+
+
 
             if (name != "" || name != null)
             {
@@ -106,9 +102,9 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 
             return RedirectToPage("Index");
         }
-        
- 
-            
+
+
+
 
     }
 }

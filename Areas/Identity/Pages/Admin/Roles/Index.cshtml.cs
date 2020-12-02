@@ -1,12 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using BibleAppEF.Areas.Identity.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 {
@@ -18,7 +15,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         private readonly RoleManager<IdentityRole> _roleManager;
 
 
-        public IndexModel(UserManager<BibleAppEFUser> userManager, SignInManager<BibleAppEFUser> signInManager,RoleManager<IdentityRole> roleManager)
+        public IndexModel(UserManager<BibleAppEFUser> userManager, SignInManager<BibleAppEFUser> signInManager, RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -27,7 +24,8 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 
         public Dictionary<string, string> AllRoles { get; set; }
 
-        public IActionResult OnGet() {
+        public IActionResult OnGet()
+        {
             AllRoles = AllTheRoles();
             return Page();
         }

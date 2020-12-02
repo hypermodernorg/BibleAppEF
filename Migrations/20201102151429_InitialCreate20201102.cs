@@ -1,6 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Pomelo.EntityFrameworkCore.MySql;
+﻿using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace BibleAppEF.Migrations
 {
@@ -14,7 +13,7 @@ namespace BibleAppEF.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySqlValueGenerationStrategy.IdentityColumn),
-                 
+
                     Version = table.Column<string>(type: "varchar(40)", nullable: false),
                     BookChapterVerse = table.Column<string>(type: "varchar(100)", nullable: true),
                     Book = table.Column<string>(type: "varchar(40)", nullable: true),

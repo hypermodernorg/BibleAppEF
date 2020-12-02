@@ -1,21 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using System.IO;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BibleAppEF.Areas.ImportBible.Data;
+﻿using BibleAppEF.Areas.ImportBible.Data;
 using BibleAppEF.Areas.ImportBible.Models;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Hosting;
-using System.Text.RegularExpressions;
-using Microsoft.EntityFrameworkCore.Scaffolding.Metadata;
-using System.Text.Json;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
-using Microsoft.AspNetCore.Razor.TagHelpers;
-using Microsoft.CodeAnalysis.CSharp.Syntax;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text.Json;
+using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -95,7 +90,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                             query += $" AND BibleText LIKE '%{word}%'";
                         }
 
-                   
+
                     }
                     query += ")";
 
@@ -144,7 +139,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                         {
                             query += $" AND BibleText NOT LIKE '%{word}%'";
                         }
-                        
+
                     }
                     query += ")";
 
@@ -214,7 +209,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
 
         public string ParseText(string text, string search, string searchmode)
         {
-            string [] textArray = text.Split();
+            string[] textArray = text.Split();
             string newText = "";
 
             if (search != null)
@@ -223,31 +218,31 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 const string pattern = @"\w[\w\d\W]*\w";
                 Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
                 //if (searchmode == "and" || searchmode == "or" || search.Split().ToArray().Length == 1) {
-                    foreach (var word in textArray)
-                    {
-                        Match m = r.Match(word);
+                foreach (var word in textArray)
+                {
+                    Match m = r.Match(word);
 
-                        if (m.Length > 3)
+                    if (m.Length > 3)
+                    {
+                        int i = 0;
+                        foreach (var searchWord in searchArray)
                         {
-                            int i = 0;
-                            foreach (var searchWord in searchArray)
+                            if (searchWord == m.ToString())
                             {
-                                if (searchWord == m.ToString())
-                                {
-                                    newText += $"<a class=\"searchword\"onclick=\"LinkSearch('{m}');\">{word}</a> ";
-                                    i = 1;
-                                }
-                            }
-                            if (i == 0)
-                            {
-                                newText += $"<a onclick=\"LinkSearch('{m}');\">{word}</a> ";
+                                newText += $"<a class=\"searchword\"onclick=\"LinkSearch('{m}');\">{word}</a> ";
+                                i = 1;
                             }
                         }
-                        else
+                        if (i == 0)
                         {
-                            newText += $"{word} ";
+                            newText += $"<a onclick=\"LinkSearch('{m}');\">{word}</a> ";
                         }
                     }
+                    else
+                    {
+                        newText += $"{word} ";
+                    }
+                }
                 //}
             }
             else // If no search words
@@ -382,7 +377,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             var versionList = _context.Registers
                 .FromSqlRaw($"SELECT * FROM registers WHERE Abbreviation = '{version}'")
                 .ToList();
-            var versionWithoutCol = versionList.Select(x => new { x.Name}).ToList();
+            var versionWithoutCol = versionList.Select(x => new { x.Name }).ToList();
 
             var objects = new { BookList = bookWithoutCol, Version = versionWithoutCol };
             //string result = new JavaScriptSerializer().Serialize(objects);
@@ -455,8 +450,8 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
 
             // Instantiate the regular expression object.
             Regex r = new Regex(pattern, RegexOptions.IgnoreCase);
-            
-            for (int i = 8; i<bibleText.Length; i++)
+
+            for (int i = 8; i < bibleText.Length; i++)
             {
                 Match m = r.Match(bibleText[i]);
 
@@ -464,7 +459,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 {
                     bible.Id = 0;
                     bible.Version = register.Abbreviation;
-                    bible.BookChapterVerse = m.Groups[1].ToString() + "|" +m.Groups[2].ToString() + "|" + m.Groups[3].ToString();
+                    bible.BookChapterVerse = m.Groups[1].ToString() + "|" + m.Groups[2].ToString() + "|" + m.Groups[3].ToString();
                     bible.Book = m.Groups[1].ToString();
                     bible.Chapter = m.Groups[2].ToString();
                     bible.Verse = m.Groups[3].ToString();
@@ -480,7 +475,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         // To protect from overposting attacks, enable the specific properties you want to bind to, for 
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-       //[ValidateAntiForgeryToken]
+        //[ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Id,Source,Name,FileType,Copyright,Abbreviation,Language,Note,IsActive")] Register register, IFormFile file)
         {
             // Begin get and save file.
@@ -498,7 +493,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             string[] bibleText = System.IO.File.ReadAllLines(filePath);
 
             int lineCount = bibleText.Length;
-            
+
 
             if (ModelState.IsValid)
             {
@@ -507,7 +502,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 InsertBibleText(bibleText, register);
                 return RedirectToAction(nameof(Index));
             }
-            
+
             return View(register);
         }
 

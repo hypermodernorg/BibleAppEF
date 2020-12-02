@@ -1,19 +1,9 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using BibleAppEF.Areas.ImportBible.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using BibleAppEF.Areas.ImportBible.Models;
-using Microsoft.EntityFrameworkCore;
-using BibleAppEF.Areas.ImportBible.Data;
-using Pomelo.EntityFrameworkCore.MySql.Infrastructure;
-using Pomelo.EntityFrameworkCore.MySql;
-using Microsoft.AspNetCore.Mvc.Razor.RuntimeCompilation;
 
 namespace BibleAppEF
 {
@@ -32,11 +22,11 @@ namespace BibleAppEF
             services.AddControllersWithViews();
             services.AddRazorPages()
                 .AddRazorRuntimeCompilation();
-          
+
             services.AddDbContext<BibleContext, BibleContext>();
             services.AddAntiforgery(o => o.HeaderName = "BIBLEAPP-TOKEN");
- 
-       
+
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
