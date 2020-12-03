@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
 
 [assembly: HostingStartup(typeof(BibleAppEF.Areas.Identity.IdentityHostingStartup))]
 namespace BibleAppEF.Areas.Identity
@@ -16,15 +15,16 @@ namespace BibleAppEF.Areas.Identity
         {
             builder.ConfigureServices((context, services) =>
             {
-                services.AddDbContext<IdentityContext>(options =>
+                services.AddDbContext<ApplicationDbContext>(options =>
                     options.UseSqlite(
                         context.Configuration.GetConnectionString("IdentityContextConnection")));
 
-                services.AddDefaultIdentity<BibleAppEFUser>(options => options.SignIn.RequireConfirmedAccount = true)
-                    .AddRoles<IdentityRole<Guid>>()
-                    .AddRoleManager<RoleManager<IdentityRole>>()
+                services.AddIdentity<ApplicationUser, ApplicationRole>()
+                    .AddRoles<ApplicationRole>() // ? 
+                    .AddRoleManager<RoleManager<ApplicationRole>>() // ?
+                    .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultUI()
-                    .AddEntityFrameworkStores<IdentityContext>();
+                    .AddDefaultTokenProviders();
             });
         }
     }

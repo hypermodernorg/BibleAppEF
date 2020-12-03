@@ -12,11 +12,11 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 {
     public class IndexModel : PageModel
     {
-        private readonly UserManager<BibleAppEFUser> _userManager;
-        private readonly IdentityContext _context;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ApplicationDbContext _context;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
-        public IndexModel(UserManager<BibleAppEFUser> userManager, IdentityContext context, RoleManager<IdentityRole> roleManager)
+        public IndexModel(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
@@ -54,7 +54,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 
         public async Task<IActionResult> OnPostAdd(string NewUserName, string NewUserEmail, string NewUserPassword)
         {
-            BibleAppEFUser user = new BibleAppEFUser();
+            ApplicationUser user = new ApplicationUser();
             user.UserName = NewUserName;
             user.Email = NewUserEmail;
             user.PasswordHash = NewUserPassword.GetHashCode().ToString();
@@ -64,7 +64,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 
         public async Task<IActionResult> OnPostDelete(string NameToDelete)
         {
-            BibleAppEFUser user = await _userManager.FindByNameAsync(NameToDelete);
+            ApplicationUser user = await _userManager.FindByNameAsync(NameToDelete);
             await _userManager.DeleteAsync(user);
             return RedirectToPage();
         }

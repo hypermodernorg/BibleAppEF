@@ -1,6 +1,7 @@
 ﻿@page
 @model BibleAppEF.Areas.Identity.Pages.Admin.Roles.EditModel
 @{
+    //var Claims = Model.AllClaims;
     <h3>Details for the Role: @Model.GetRole.Name</h3>
     <hr />
     <form method="post">
@@ -9,7 +10,7 @@
                 <label>Role Id: </label>
             </div>
             <div class="col-5">
-                @Model.GetRole.Id
+                @Model.GetRole.Id.ToString()
             </div>
             <div class="col-5">
 
@@ -27,6 +28,41 @@
                 <input type="text" name="roleName"/>
             </div>
         </div>
+        <hr />
+        <div class="row">
+            <div class="col-2">
+                <label>Permissions: </label>
+            </div>
+            <div class="col-5">
+                @{var i = 0;}
+                @*@foreach (var claim in Claims)
+                {
+                    i++;
+                    foreach (var claim2 in Model.Claims)
+                    {
+                        @if (claim == claim2.Type)
+                        {
+                            <div class="row custom-control custom-checkbox">
+                                <input id="@claim@i" name="@claim" type="checkbox" class="custom-control-input" checked="" />
+                                <label class="custom-control-label">@claim</label>
+                            </div>
+                        }
+
+                        else
+                        {
+                            <div class="row custom-control custom-checkbox">
+                                <input id="@claim@i" name="@claim" type="checkbox" class="custom-control-input" />
+                                <label class="custom-control-label">@claim</label>
+                            </div>
+                        }
+                    }
+
+                    //Claims.Remove(claim);
+                }*@
+            </div>
+        </div>
+
+
         <hr />
         <div class="row">
             <div class="col">

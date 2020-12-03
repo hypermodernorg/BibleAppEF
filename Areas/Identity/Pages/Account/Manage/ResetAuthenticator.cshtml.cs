@@ -9,13 +9,13 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        UserManager<BibleAppEFUser> _userManager;
-        private readonly SignInManager<BibleAppEFUser> _signInManager;
+        UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         ILogger<ResetAuthenticatorModel> _logger;
 
         public ResetAuthenticatorModel(
-            UserManager<BibleAppEFUser> userManager,
-            SignInManager<BibleAppEFUser> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             ILogger<ResetAuthenticatorModel> logger)
         {
             _userManager = userManager;

@@ -13,11 +13,11 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
 {
     public class DownloadPersonalDataModel : PageModel
     {
-        private readonly UserManager<BibleAppEFUser> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
         private readonly ILogger<DownloadPersonalDataModel> _logger;
 
         public DownloadPersonalDataModel(
-            UserManager<BibleAppEFUser> userManager,
+            UserManager<ApplicationUser> userManager,
             ILogger<DownloadPersonalDataModel> logger)
         {
             _userManager = userManager;
@@ -36,7 +36,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
 
             // Only include personal data for download
             var personalData = new Dictionary<string, string>();
-            var personalDataProps = typeof(BibleAppEFUser).GetProperties().Where(
+            var personalDataProps = typeof(ApplicationUser).GetProperties().Where(
                             prop => Attribute.IsDefined(prop, typeof(PersonalDataAttribute)));
             foreach (var p in personalDataProps)
             {

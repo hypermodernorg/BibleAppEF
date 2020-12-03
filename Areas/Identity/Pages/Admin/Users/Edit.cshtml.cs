@@ -7,20 +7,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 {
     public class EditModel : PageModel
     {
-        private readonly UserManager<BibleAppEFUser> _userManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
 
-        public EditModel(UserManager<BibleAppEFUser> userManager, RoleManager<IdentityRole> roleManager)
+        public EditModel(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _roleManager = roleManager;
         }
-        public BibleAppEFUser GetUser;
+        public ApplicationUser GetUser;
         public string Role;
         public List<SelectListItem> Options { get; set; }
         public string selectedRole { get; set; }

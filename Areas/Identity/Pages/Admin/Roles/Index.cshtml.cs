@@ -4,18 +4,19 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using System;
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 {
     [IgnoreAntiforgeryToken(Order = 1001)]
     public class IndexModel : PageModel
     {
-        private readonly UserManager<BibleAppEFUser> _userManager;
-        private readonly SignInManager<BibleAppEFUser> _signInManager;
-        private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
+        private readonly RoleManager<ApplicationRole> _roleManager;
 
 
-        public IndexModel(UserManager<BibleAppEFUser> userManager, SignInManager<BibleAppEFUser> signInManager, RoleManager<IdentityRole> roleManager)
+        public IndexModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
@@ -35,7 +36,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             Dictionary<string, string> Roles = new Dictionary<string, string>();
             foreach (var role in _roleManager.Roles)
             {
-                Roles.Add(role.Id, role.Name);
+                Roles.Add(role.Id.ToString(), role.Name);
             }
 
             AllRoles = Roles;
@@ -44,7 +45,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 
         public async Task<IActionResult> OnPostAdd(string NewRole)
         {
-            IdentityRole role = new IdentityRole
+            ApplicationRole role = new ApplicationRole
             {
                 Name = NewRole,
                 NormalizedName = NewRole.ToUpper()
@@ -56,7 +57,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 
         public async Task<IActionResult> OnPostDelete(string updateRole)
         {
-            IdentityRole theRole = await _roleManager.FindByIdAsync(updateRole);
+            ApplicationRole theRole = await _roleManager.FindByIdAsync(updateRole);
             await _roleManager.DeleteAsync(theRole);
             AllRoles = AllTheRoles();
 
@@ -64,9 +65,9 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         }
 
         [TempData]
-        public string UpdateRole { get; set; }
+        public Guid UpdateRole { get; set; }
 
-        public IActionResult OnPostEdit(string updateRole)
+        public IActionResult OnPostEdit(Guid updateRole)
         {
             UpdateRole = updateRole;
             return RedirectToPage($"Edit", "Get");
