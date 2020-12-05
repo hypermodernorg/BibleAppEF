@@ -5,9 +5,11 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 {
+    [Authorize("ViewRoles")]
     [IgnoreAntiforgeryToken(Order = 1001)]
     public class IndexModel : PageModel
     {
@@ -25,6 +27,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 
         public Dictionary<string, string> AllRoles { get; set; }
 
+        
         public IActionResult OnGet()
         {
             AllRoles = AllTheRoles();

@@ -20,7 +20,8 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         private readonly RoleManager<ApplicationRole> _roleManager;
         public ApplicationRole GetRole;
         public List<Claim> Claims { get; set; }
-        public List<string> AllClaims { get; set; }
+        public List<string> AllRoleClaims { get; set; }
+        public List<string> AllUserClaims { get; set; }
 
         public EditModel(UserManager<ApplicationUser> userManager, RoleManager<ApplicationRole> roleManager)
         {
@@ -31,17 +32,27 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         [BindProperty]
         public List<RoleClaim> RoleClaims { get; set; }
 
-        public void ClaimTypes()
+        public void RoleClaimTypes()
         {
-            List<string> listclaims = new List<string>
+            AllRoleClaims = new List<string>
             {
                 "CanViewRoles",
                 "CanAddRoles",
                 "CanEditRoles",
                 "CanDeleteRoles"
             };
-            AllClaims = listclaims;
         }
+        public void UserClaimTypes()
+        {
+            AllUserClaims = new List<string>
+            {
+                "CanViewUsers",
+                "CanAddUsers",
+                "CanEditUsers",
+                "CanDeleteUsers"
+            };
+        }
+
         public async Task<IActionResult> OnGetAsync()
         {
             List<RoleClaim> roleClaims = new List<RoleClaim>();
@@ -49,8 +60,8 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             GetRole = await _roleManager.FindByIdAsync(RoleToUpdate);
             //await _roleManager.AddClaimAsync(GetRole, new Claim("CanViewRoles", "CanViewRoles"));
             Claims = await _roleManager.GetClaimsAsync(GetRole) as List<Claim>;
-            ClaimTypes();
-            foreach (var claim in AllClaims)
+            RoleClaimTypes();
+            foreach (var claim in AllRoleClaims)
             {
                 if (Claims.Exists(x => x.Type == claim))
                 {
@@ -73,7 +84,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             }
             RoleClaims = roleClaims;
 
-            ClaimTypes();
+            RoleClaimTypes();
             return Page();
         }
 
@@ -81,21 +92,12 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         {
             Claims = await _roleManager.GetClaimsAsync(role) as List<Claim>;
             
-
             foreach (var roleClaim in RoleClaims)
             {
-                var testselect = roleClaim.Selected;
-                var testclami = roleClaim.claim;
-                //if (roleClaim.Selected && !Claims.Exists(x => x.Type == roleClaim.claim))
                 if (roleClaim.Selected)
                 {
                     await _roleManager.AddClaimAsync(role, new Claim(roleClaim.claim, roleClaim.claim));
                 }
-                //else if (!roleClaim.Selected && Claims.Exists(x => x.Type == roleClaim.claim))
-                //{
-                //    await _roleManager.RemoveClaimAsync(role, Claims.Find(x=> x.Type.Contains(roleClaim.claim)));
-                //}
-                //await _roleManager.AddClaimAsync(role, new Claim("CanViewRoles", "CanViewRoles"));
             }
         }
 
@@ -106,13 +108,11 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             
             Claims = await _roleManager.GetClaimsAsync(GetRole) as List<Claim>;
 
-
             foreach (var roleClaim in RoleClaims)
             {
                 var testselect = roleClaim.Selected;
                 var testclami = roleClaim.claim;
                 if (roleClaim.Selected && !Claims.Exists(x => x.Type == roleClaim.claim))
-                //if (roleClaim.Selected)
                 {
                     await _roleManager.AddClaimAsync(GetRole, new Claim(roleClaim.claim, roleClaim.claim));
                 }
@@ -120,12 +120,10 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
                 {
                     await _roleManager.RemoveClaimAsync(GetRole, Claims.Find(x => x.Type.Contains(roleClaim.claim)));
                 }
-                //await _roleManager.AddClaimAsync(role, new Claim("CanViewRoles", "CanViewRoles"));
             }
+
             await _roleManager.UpdateAsync(GetRole);
             return RedirectToPage("Index");
         }
     }
-
-
 }
