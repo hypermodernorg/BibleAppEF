@@ -31,6 +31,8 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 
         [BindProperty]
         public List<RoleClaim> RoleClaims { get; set; }
+        [BindProperty]
+        public List<RoleClaim> UserClaims { get; set; }
 
         public void RoleClaimTypes()
         {
@@ -56,35 +58,71 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         public async Task<IActionResult> OnGetAsync()
         {
             List<RoleClaim> roleClaims = new List<RoleClaim>();
+            List<RoleClaim> userClaims = new List<RoleClaim>();
             var RoleToUpdate = TempData["UpdateRole"].ToString();
             GetRole = await _roleManager.FindByIdAsync(RoleToUpdate);
             //await _roleManager.AddClaimAsync(GetRole, new Claim("CanViewRoles", "CanViewRoles"));
             Claims = await _roleManager.GetClaimsAsync(GetRole) as List<Claim>;
             RoleClaimTypes();
+            UserClaimTypes();
             foreach (var claim in AllRoleClaims)
             {
-                if (Claims.Exists(x => x.Type == claim))
+
+
+                if(claim.Contains("Roles"))
                 {
-                    RoleClaim newClaim = new RoleClaim
+                    /////
+                    if (Claims.Exists(x => x.Type == claim))
                     {
-                        claim = claim,
-                        Selected = true
-                    };
-                    roleClaims.Add(newClaim);
-                }
-                else
-                {
-                    RoleClaim newClaim = new RoleClaim
+                        RoleClaim newClaim = new RoleClaim
+                        {
+                            claim = claim,
+                            Selected = true
+                        };
+                        roleClaims.Add(newClaim);
+                    }
+                    else
                     {
-                        claim = claim,
-                        Selected = false
-                    };
-                    roleClaims.Add(newClaim);
+                        RoleClaim newClaim = new RoleClaim
+                        {
+                            claim = claim,
+                            Selected = false
+                        };
+                        roleClaims.Add(newClaim);
+                    }
+                    ////
                 }
             }
-            RoleClaims = roleClaims;
+            foreach (var claim in AllUserClaims)
+            {
+                if (claim.Contains("Users"))
+                {
+                    /////
+                    if (Claims.Exists(x => x.Type == claim))
+                    {
+                        RoleClaim newClaim = new RoleClaim
+                        {
+                            claim = claim,
+                            Selected = true
+                        };
+                        userClaims.Add(newClaim);
+                    }
+                    else
+                    {
+                        RoleClaim newClaim = new RoleClaim
+                        {
+                            claim = claim,
+                            Selected = false
+                        };
+                        userClaims.Add(newClaim);
+                    }
+                    ////
+                }
+            }
 
-            RoleClaimTypes();
+            RoleClaims = roleClaims;
+            UserClaims = userClaims;
+
             return Page();
         }
 
@@ -97,6 +135,13 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
                 if (roleClaim.Selected)
                 {
                     await _roleManager.AddClaimAsync(role, new Claim(roleClaim.claim, roleClaim.claim));
+                }
+            }
+            foreach (var userClaim in UserClaims)
+            {
+                if (userClaim.Selected)
+                {
+                    await _roleManager.AddClaimAsync(role, new Claim(userClaim.claim, userClaim.claim));
                 }
             }
         }
@@ -119,6 +164,19 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
                 else if (!roleClaim.Selected && Claims.Exists(x => x.Type == roleClaim.claim))
                 {
                     await _roleManager.RemoveClaimAsync(GetRole, Claims.Find(x => x.Type.Contains(roleClaim.claim)));
+                }
+            }
+            foreach (var userClaim in UserClaims)
+            {
+                var testselect = userClaim.Selected;
+                var testclami = userClaim.claim;
+                if (userClaim.Selected && !Claims.Exists(x => x.Type == userClaim.claim))
+                {
+                    await _roleManager.AddClaimAsync(GetRole, new Claim(userClaim.claim, userClaim.claim));
+                }
+                else if (!userClaim.Selected && Claims.Exists(x => x.Type == userClaim.claim))
+                {
+                    await _roleManager.RemoveClaimAsync(GetRole, Claims.Find(x => x.Type.Contains(userClaim.claim)));
                 }
             }
 
