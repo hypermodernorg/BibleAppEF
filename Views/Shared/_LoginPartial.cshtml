@@ -8,6 +8,7 @@
  
 @{ 
     var roleviewcheck = await AuthorizationService.AuthorizeAsync(User, "ViewRoles");
+    var userviewcheck = await AuthorizationService.AuthorizeAsync(User, "ViewUsers");
 
 }
 <ul class="navbar-nav">
@@ -24,8 +25,12 @@
                 {
                     <a class="nav-link" asp-area="Identity" asp-page="/Admin/Roles/Index" title="Roles">View Roles</a>
                 }
- 
-                <a class="nav-link" asp-area="Identity" asp-page="/Admin/Users/Index" title="Roles">Users</a>
+
+                @if (userviewcheck.Succeeded)
+                {
+                    <a class="nav-link" asp-area="Identity" asp-page="/Admin/Users/Index" title="Roles">Users</a>
+                }
+
 
                 <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
                     <button id="logout" type="submit" class="nav-link btn btn-link text-white">Logout</button>

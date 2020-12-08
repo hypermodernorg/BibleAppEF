@@ -7,9 +7,11 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 {
+    [Authorize("ViewUsers")]
     public class IndexModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;

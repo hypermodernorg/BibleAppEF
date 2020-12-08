@@ -33,6 +33,11 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
             [Phone]
             [Display(Name = "Phone number")]
             public string PhoneNumber { get; set; }
+
+            //[DataType(DataType.Text)]
+            //[Display(Name = "Version Preferences", Description ="Which versions are active?")]
+            //public string VersionsString { get; set; }
+
         }
 
         private async Task LoadAsync(ApplicationUser user)
@@ -44,7 +49,8 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
 
             Input = new InputModel
             {
-                PhoneNumber = phoneNumber
+                PhoneNumber = phoneNumber,
+                //VersionsString = user.VersionsString
             };
         }
 
@@ -84,6 +90,12 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
                     return RedirectToPage();
                 }
             }
+            //if (Input.VersionsString != user.VersionsString)
+            //{
+            //    user.VersionsString = Input.VersionsString;
+            //}
+
+            await _userManager.UpdateAsync(user);
 
             await _signInManager.RefreshSignInAsync(user);
             StatusMessage = "Your profile has been updated";
