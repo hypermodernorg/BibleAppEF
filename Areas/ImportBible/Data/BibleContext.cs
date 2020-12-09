@@ -17,7 +17,8 @@ namespace BibleAppEF.Areas.ImportBible.Data
                 .UseMySql("server=localhost;uid=root;pwd=Nisarascalcj1!r;database=biblebase",
                    MySqlServerVersion.LatestSupportedServerVersion,
                         mySqlOptions => mySqlOptions
-                            .CharSetBehavior(CharSetBehavior.NeverAppend))
+                            .CharSetBehavior(CharSetBehavior.NeverAppend)
+                            .EnableRetryOnFailure())
                 .EnableDetailedErrors()
                 .EnableSensitiveDataLogging();
         }

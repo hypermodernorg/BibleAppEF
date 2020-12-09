@@ -61,14 +61,12 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
             List<RoleClaim> userClaims = new List<RoleClaim>();
             var RoleToUpdate = TempData["UpdateRole"].ToString();
             GetRole = await _roleManager.FindByIdAsync(RoleToUpdate);
-            //await _roleManager.AddClaimAsync(GetRole, new Claim("CanViewRoles", "CanViewRoles"));
             Claims = await _roleManager.GetClaimsAsync(GetRole) as List<Claim>;
             RoleClaimTypes();
             UserClaimTypes();
+
             foreach (var claim in AllRoleClaims)
             {
-
-
                 if(claim.Contains("Roles"))
                 {
                     /////

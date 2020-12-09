@@ -11,6 +11,7 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -20,17 +21,22 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
     {
         private readonly BibleContext _context;
         private readonly IWebHostEnvironment _env;
+        private readonly UserManager<ApplicationRole> _userManager;
 
-        public RegistersController(BibleContext context, IWebHostEnvironment env)
+        public RegistersController(BibleContext context, IWebHostEnvironment env, UserManager<ApplicationRole> userManager)
         {
             _context = context;
             _env = env;
+            _userManager = userManager;
         }
-
 
         // Search
         public async Task<IActionResult> Search(string? id)
         {
+            var user = await _userManager.GetUserAsync(HttpContext.User);
+
+
+
             List<string> versionList = new List<string>();
             var availableVersions = await _context.Registers.ToListAsync();
             foreach (var versions in availableVersions)
