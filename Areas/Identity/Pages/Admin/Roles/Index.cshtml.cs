@@ -16,13 +16,14 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        public  IAuthorizationService _authorizationService;
 
-
-        public IndexModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager)
+        public IndexModel(UserManager<ApplicationUser> userManager, SignInManager<ApplicationUser> signInManager, RoleManager<ApplicationRole> roleManager, IAuthorizationService authorizationService)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _authorizationService = authorizationService;
         }
 
         public Dictionary<string, string> AllRoles { get; set; }

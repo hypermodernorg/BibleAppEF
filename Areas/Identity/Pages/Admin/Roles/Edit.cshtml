@@ -1,7 +1,7 @@
 ﻿@page
 @model BibleAppEF.Areas.Identity.Pages.Admin.Roles.EditModel
 @{
-    //var Claims = Model.AllRoleClaims;
+    
 
     <h3>Details for the Role: @Model.GetRole.Name</h3>
     <hr />
@@ -35,10 +35,10 @@
               
         </div>
         <div class="row">
-            <div class="col-6">
+            <div class="col">
                 <div class="row"><div class="col"><h6>Roles</h6></div></div>
 
-               @for (var i = 0; i < Model.RoleClaims.Count; i++)
+                @for (var i = 0; i < Model.RoleClaims.Count; i++)
                 {
                     <div class="row custom-control custom-checkbox">
                         <div class="col">
@@ -49,7 +49,7 @@
                     </div>
                 }
             </div>
-            <div class="col-6">
+            <div class="col">
                 <div class="row"><div class="col"><h6>Users</h6></div></div>
 
                 @for (var i = 0; i < Model.UserClaims.Count; i++)
@@ -59,6 +59,20 @@
                             <input type="checkbox" asp-for="@Model.UserClaims[i].Selected" />
                             <label asp-for="@Model.UserClaims[i].Selected">@Model.UserClaims[i].claim</label>
                             <input type="hidden" asp-for="@Model.UserClaims[i].claim" />
+                        </div>
+                    </div>
+                }
+            </div>
+            <div class="col">
+                <div class="row"><div class="col"><h6>Versions</h6></div></div>
+
+                @for (var i = 0; i < Model.VersionClaims.Count; i++)
+                {
+                    <div class="row custom-control custom-checkbox">
+                        <div class="col">
+                            <input type="checkbox" asp-for="@Model.VersionClaims[i].Selected" />
+                            <label asp-for="@Model.VersionClaims[i].Selected">@Model.VersionClaims[i].claim</label>
+                            <input type="hidden" asp-for="@Model.VersionClaims[i].claim" />
                         </div>
                     </div>
                 }

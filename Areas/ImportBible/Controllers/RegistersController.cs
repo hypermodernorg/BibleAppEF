@@ -12,6 +12,7 @@ using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using BibleAppEF.Areas.Identity.Data;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -21,9 +22,9 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
     {
         private readonly BibleContext _context;
         private readonly IWebHostEnvironment _env;
-        private readonly UserManager<ApplicationRole> _userManager;
+        private readonly UserManager<ApplicationUser> _userManager;
 
-        public RegistersController(BibleContext context, IWebHostEnvironment env, UserManager<ApplicationRole> userManager)
+        public RegistersController(BibleContext context, IWebHostEnvironment env, UserManager<ApplicationUser> userManager)
         {
             _context = context;
             _env = env;
@@ -34,7 +35,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         public async Task<IActionResult> Search(string? id)
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
-
+            var userVersions = user.VersionsString.Split().ToList();
 
 
             List<string> versionList = new List<string>();
@@ -43,7 +44,12 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             {
                 if (versions.IsActive)
                 {
-                    versionList.Add(versions.Abbreviation);
+                    if (userVersions.Count == 0 || userVersions[0] == "") { versionList.Add(versions.Abbreviation); }
+                    else if (userVersions.Exists(x=> x.Contains(versions.Abbreviation)))
+                    {
+                        versionList.Add(versions.Abbreviation);
+                    }
+                  
                 }
 
             }

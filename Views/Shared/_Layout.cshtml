@@ -20,12 +20,7 @@
                     <li class="nav-item active">
                         <a class="nav-link" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="ImportBible" asp-controller="Registers" asp-action="Index">Versions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" asp-area="ImportBible" asp-controller="Registers" asp-action="Create">Import Bible</a>
-                    </li>
+
                     <li class="nav-item">
                         <a class="nav-link" asp-area="ImportBible" asp-controller="Registers" asp-action="Search">Search</a>
                     </li>
@@ -42,11 +37,8 @@
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2020 - BIBLEAPP - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
+    <partial name="_FooterPartial" />
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>

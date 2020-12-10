@@ -26,8 +26,22 @@ namespace BibleAppEF.Areas.Identity
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
                 services.AddAuthorization(options => {
+
                     options.AddPolicy("ViewRoles", policy => policy.RequireClaim("CanViewRoles"));
+                    options.AddPolicy("AddRoles", policy => policy.RequireClaim("CanAddRoles"));
+                    options.AddPolicy("EditRoles", policy => policy.RequireClaim("CanEditRoles"));
+                    options.AddPolicy("DeleteRoles", policy => policy.RequireClaim("CanDeleteRoles"));
+                    
+                    options.AddPolicy("ViewVersions", policy => policy.RequireClaim("CanViewVersions"));
+                    options.AddPolicy("AddVersions", policy => policy.RequireClaim("CanAddVersions"));
+                    options.AddPolicy("EditVersions", policy => policy.RequireClaim("CanEditVersions"));
+                    options.AddPolicy("DeleteVersions", policy => policy.RequireClaim("CanDeleteVersions"));
+
                     options.AddPolicy("ViewUsers", policy => policy.RequireClaim("CanViewUsers"));
+                    options.AddPolicy("AddUsers", policy => policy.RequireClaim("CanAddUsers"));
+                    options.AddPolicy("EditUsers", policy => policy.RequireClaim("CanEditUsers"));
+                    options.AddPolicy("DeleteUsers", policy => policy.RequireClaim("CanDeleteUsers"));
+
                 });
             });
         }

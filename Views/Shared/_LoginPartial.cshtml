@@ -2,38 +2,49 @@
 @using BibleAppEF.Areas.Identity.Data
 @using Microsoft.AspNetCore.Authorization
 
+
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 @inject IAuthorizationService AuthorizationService
- 
-@{ 
+
+@{
     var roleviewcheck = await AuthorizationService.AuthorizeAsync(User, "ViewRoles");
     var userviewcheck = await AuthorizationService.AuthorizeAsync(User, "ViewUsers");
-
+    var versionviewcheck = await AuthorizationService.AuthorizeAsync(User, "ViewVersions");
+    var versionAddcheck = await AuthorizationService.AuthorizeAsync(User, "AddVersions");
 }
 <ul class="navbar-nav">
     @if (SignInManager.IsSignedIn(User))
     {
-        <li class="nav-item dropdown">
+        <li class="nav-item dropdown show">
             <a id="manage" class="nav-link text-white dropdown-toggle" data-toggle="dropdown" role="button" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" aria-haspopup="true" aria-expanded="false">@UserManager.GetUserName(User)</a>
-            <div class="dropdown-menu bg-dark">
-                <a id="manage" class="nav-link text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account Management</a>
-                <a class="nav-link" asp-area="ImportBible" asp-controller="Registers" asp-action="Index">Versions</a>
-                <a class="nav-link" asp-area="ImportBible" asp-controller="Registers" asp-action="Create">Import Bible</a>
-
+            <div class="dropdown-menu dropdown-menu-right">
+                <a id="manage" class="dropdown-item" text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
+                <div class="dropdown-divider"></div>
                 @if (roleviewcheck.Succeeded) //AuthorizeAsync(User, "ViewRoles"))
                 {
-                    <a class="nav-link" asp-area="Identity" asp-page="/Admin/Roles/Index" title="Roles">View Roles</a>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Admin/Roles/Index" title="Roles">View Roles</a>
                 }
 
                 @if (userviewcheck.Succeeded)
                 {
-                    <a class="nav-link" asp-area="Identity" asp-page="/Admin/Users/Index" title="Roles">Users</a>
+                    <a class="dropdown-item" asp-area="Identity" asp-page="/Admin/Users/Index" title="Roles">View Users</a>
+                }
+
+                @if (versionviewcheck.Succeeded)
+                {
+                    <a class="dropdown-item" asp-area="ImportBible" asp-controller="Registers" asp-action="Index">View Versions</a>
+                }
+                @if (versionAddcheck.Succeeded)
+                {
+                    <a class="dropdown-item" asp-area="ImportBible" asp-controller="Registers" asp-action="Create">Import Bible</a>
+
                 }
 
 
+
                 <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                    <button id="logout" type="submit" class="nav-link btn btn-link text-white">Logout</button>
+                    <button id="logout" type="submit" class="dropdown-item btn-link">Logout</button>
                 </form>
             </div>
         </li>
