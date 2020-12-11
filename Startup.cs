@@ -55,6 +55,7 @@ namespace BibleAppEF
                     pattern: "{area:exists}/{Controller=Default}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
                     name: "default",
+                    //pattern: "{controller=Registers}/{action=Search}/{id?}");
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
         }

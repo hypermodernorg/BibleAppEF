@@ -47,7 +47,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
             Input = new InputModel
             {
                 PhoneNumber = phoneNumber,
-             
+
             };
         }
 

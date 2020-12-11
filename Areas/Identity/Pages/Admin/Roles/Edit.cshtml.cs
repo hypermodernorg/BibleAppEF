@@ -15,11 +15,13 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         public string claim { get; set; }
         public bool Selected { get; set; }
     }
+    
+    [Authorize("EditRoles")]
     public class EditModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly RoleManager<ApplicationRole> _roleManager;
-        
+
         public ApplicationRole GetRole;
         public List<Claim> Claims { get; set; }
         public List<string> AllRoleClaims { get; set; }
@@ -30,7 +32,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         {
             _userManager = userManager;
             _roleManager = roleManager;
-        
+
         }
 
         [BindProperty]
@@ -86,7 +88,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
 
             foreach (var claim in AllRoleClaims)
             {
-                if(claim.Contains("Roles"))
+                if (claim.Contains("Roles"))
                 {
                     /////
                     if (Claims.Exists(x => x.Type == claim))
@@ -174,7 +176,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         public async void UpdateRolePermissions(ApplicationRole role)
         {
             Claims = await _roleManager.GetClaimsAsync(role) as List<Claim>;
-            
+
             foreach (var roleClaim in RoleClaims)
             {
                 if (roleClaim.Selected)
@@ -202,7 +204,7 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Roles
         {
             GetRole = await _roleManager.FindByIdAsync(roleId);
             GetRole.Name = roleName;
-            
+
             Claims = await _roleManager.GetClaimsAsync(GetRole) as List<Claim>;
 
             foreach (var roleClaim in RoleClaims)

@@ -1,7 +1,10 @@
-﻿using BibleAppEF.Areas.ImportBible.Data;
+﻿using BibleAppEF.Areas.Identity.Data;
+using BibleAppEF.Areas.ImportBible.Data;
 using BibleAppEF.Areas.ImportBible.Models;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.EntityFrameworkCore;
@@ -11,8 +14,6 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Identity;
-using BibleAppEF.Areas.Identity.Data;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -34,22 +35,31 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         // Search
         public async Task<IActionResult> Search(string? id)
         {
+            var availableVersions = await _context.Registers.ToListAsync();
             var user = await _userManager.GetUserAsync(HttpContext.User);
-            var userVersions = user.VersionsString.Split().ToList();
+            var userVersions = new List<string>();
 
+            if (user != null && user.VersionsString != null) // If logged in, get user list of versions
+            {
+                userVersions = user.VersionsString.Split().ToList();
+            }
+            else // If not logged in, get all available versions
+            {
+                userVersions = availableVersions.Select(x => x.Abbreviation).ToList();
+            }
 
             List<string> versionList = new List<string>();
-            var availableVersions = await _context.Registers.ToListAsync();
+
             foreach (var versions in availableVersions)
             {
                 if (versions.IsActive)
                 {
                     if (userVersions.Count == 0 || userVersions[0] == "") { versionList.Add(versions.Abbreviation); }
-                    else if (userVersions.Exists(x=> x.Contains(versions.Abbreviation)))
+                    else if (userVersions.Exists(x => x.Contains(versions.Abbreviation)))
                     {
                         versionList.Add(versions.Abbreviation);
                     }
-                  
+
                 }
 
             }
@@ -423,12 +433,15 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         }
 
         // GET: ImportBible/Registers
+
+        [Authorize("ViewVersions")]
         public async Task<IActionResult> Index()
         {
             return View(await _context.Registers.ToListAsync());
         }
 
         // GET: ImportBible/Registers/Details/5
+        [Authorize("EditVersions")]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -447,11 +460,13 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         }
 
         // GET: ImportBible/Registers/Create
+        [Authorize("AddVersions")]
         public IActionResult Create()
         {
             return View();
         }
 
+        [Authorize("AddVersions")]
         public async void InsertBibleText(string[] bibleText, Register register)
         {
             Bible bible = new Bible();
@@ -488,6 +503,8 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         //[ValidateAntiForgeryToken]
+
+        [Authorize("AddVersions")]
         public async Task<IActionResult> Create([Bind("Id,Source,Name,FileType,Copyright,Abbreviation,Language,Note,IsActive")] Register register, IFormFile file)
         {
             // Begin get and save file.
@@ -519,6 +536,8 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         }
 
         // GET: ImportBible/Registers/Edit/5
+
+        [Authorize("EditVersions")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -539,6 +558,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize("EditVersions")]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Source,Name,FileType,Copyright,Abbreviation,Language,Note,IsActive")] Register register)
         {
             var abbreviation = register.Abbreviation;

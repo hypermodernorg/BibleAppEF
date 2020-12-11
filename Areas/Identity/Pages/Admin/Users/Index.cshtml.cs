@@ -1,5 +1,6 @@
 using BibleAppEF.Areas.Identity.Data;
 using BibleAppEF.Data;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -7,7 +8,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 {
@@ -17,12 +17,14 @@ namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
         private readonly UserManager<ApplicationUser> _userManager;
         private readonly ApplicationDbContext _context;
         private readonly RoleManager<ApplicationRole> _roleManager;
+        public IAuthorizationService _authorizationService;
 
-        public IndexModel(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<ApplicationRole> roleManager)
+        public IndexModel(UserManager<ApplicationUser> userManager, ApplicationDbContext context, RoleManager<ApplicationRole> roleManager, IAuthorizationService authorizationService)
         {
             _userManager = userManager;
             _roleManager = roleManager;
             _context = context;
+            _authorizationService = authorizationService;
         }
 
         public Dictionary<string, string> GetUsers { get; set; }

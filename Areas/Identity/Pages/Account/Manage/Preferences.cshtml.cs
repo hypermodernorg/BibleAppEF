@@ -1,14 +1,12 @@
-using System;
+using BibleAppEF.Areas.Identity.Data;
+using BibleAppEF.Areas.ImportBible.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using BibleAppEF.Areas.ImportBible.Data;
-using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
-using BibleAppEF.Areas.Identity.Data;
-using Microsoft.AspNetCore.Identity;
 
 
 namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
@@ -47,10 +45,11 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
                 {
                     var versionlist = new VersionsSelected();
                     versionlist.Version = versions.Abbreviation;
-    
+
                     versionlist.Selected = false;
 
-                    if (user.VersionsString != null) {
+                    if (user.VersionsString != null)
+                    {
                         foreach (var userVersion in user.VersionsString.Split().ToList())
                         {
                             if (userVersion == versions.Abbreviation)
@@ -73,13 +72,13 @@ namespace BibleAppEF.Areas.Identity.Pages.Account.Manage
         {
             var user = await _userManager.GetUserAsync(HttpContext.User);
             string versionString = "";
-            foreach(var version in VersionList)
+            foreach (var version in VersionList)
             {
                 if (version.Selected)
                 {
                     versionString += version.Version + " ";
                 }
-                
+
             }
             user.VersionsString = versionString;
             await _userManager.UpdateAsync(user);

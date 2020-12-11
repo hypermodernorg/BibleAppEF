@@ -25,13 +25,14 @@ namespace BibleAppEF.Areas.Identity
                     .AddEntityFrameworkStores<ApplicationDbContext>()
                     .AddDefaultUI()
                     .AddDefaultTokenProviders();
-                services.AddAuthorization(options => {
+                services.AddAuthorization(options =>
+                {
 
                     options.AddPolicy("ViewRoles", policy => policy.RequireClaim("CanViewRoles"));
                     options.AddPolicy("AddRoles", policy => policy.RequireClaim("CanAddRoles"));
                     options.AddPolicy("EditRoles", policy => policy.RequireClaim("CanEditRoles"));
                     options.AddPolicy("DeleteRoles", policy => policy.RequireClaim("CanDeleteRoles"));
-                    
+
                     options.AddPolicy("ViewVersions", policy => policy.RequireClaim("CanViewVersions"));
                     options.AddPolicy("AddVersions", policy => policy.RequireClaim("CanAddVersions"));
                     options.AddPolicy("EditVersions", policy => policy.RequireClaim("CanEditVersions"));

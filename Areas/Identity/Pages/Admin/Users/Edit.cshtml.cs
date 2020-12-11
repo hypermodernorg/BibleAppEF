@@ -6,10 +6,12 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 
 namespace BibleAppEF.Areas.Identity.Pages.Admin.Users
 {
+    [Authorize("EditUsers")]
     public class EditModel : PageModel
     {
         private readonly UserManager<ApplicationUser> _userManager;
