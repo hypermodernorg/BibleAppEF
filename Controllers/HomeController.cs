@@ -16,7 +16,14 @@ namespace BibleAppEF.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            //return View();
+            return RedirectToRoute(new
+            {
+                area = "ImportBible",
+                controller = "Registers",
+                action = "Search",
+
+            });
         }
 
         public IActionResult Privacy()

@@ -14,6 +14,8 @@ using System.Linq;
 using System.Text.Json;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -69,9 +71,10 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         }
         // End Search
 
-
+        
         public string BuildQuery(string version, string book, string chapter, string verse, string wordstosearch, string searchmode, string nottosearch, string notmode)
         {
+
             string query = $"SELECT * FROM BIBLES WHERE (Version = '{version}')";
 
             if (book != null)
@@ -192,39 +195,51 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
 
         // Process Search
         [HttpPost]
-        public string GetBible(string version, string book, string chapter, string verse, string wordstosearch, string searchmode, string nottosearch, string notmode)
+        public string GetBible(string version, string book, string chapter, string verse, [RegularExpression("[a-zA-Z0-9_ ]*", ErrorMessage = "Search for...: Alphanumeric characters only please.")] string wordstosearch, string searchmode, [RegularExpression("[a-zA-Z0-9_ ]*", ErrorMessage = "but NOT...: Alphanumeric characters only please.")] string nottosearch, string notmode)
         {
-            string queryString = BuildQuery(version, book, chapter, verse, wordstosearch, searchmode, nottosearch, notmode);
-
-            var bibleText = _context.Bibles
-                .FromSqlRaw(queryString)
-                .ToList();
-
             string allText = "";
-
-            string chapterInt = "";
-            string bookCheck = "";
-
-            foreach (var line in bibleText)
+            if (ModelState.IsValid)
             {
-                if (bookCheck != line.Book)
+                string queryString = BuildQuery(version, book, chapter, verse, wordstosearch, searchmode, nottosearch, notmode);
+
+                var bibleText = _context.Bibles
+                    .FromSqlRaw(queryString)
+                    .ToList();
+
+                string chapterInt = "";
+                string bookCheck = "";
+
+                foreach (var line in bibleText)
                 {
+                    if (bookCheck != line.Book)
+                    {
+                        allText += $"<div class='row'><div class='col pt-4 text-center'><h5>{BookDictionary(line.Book)}</h5></div></div>";
+                        chapterInt = "";
+                        bookCheck = line.Book;
+                    }
 
-                    allText += $"<div class='row'><div class='col pt-4 text-center'><h5>{BookDictionary(line.Book)}</h5></div></div>";
-                    chapterInt = "";
-                    bookCheck = line.Book;
+                    if (chapterInt != line.Chapter)
+                    {
+                        allText += $"<div class='row'><div class='col pt-4'><h5>Chapter {line.Chapter}</h5></div></div>";
+                        chapterInt = line.Chapter;
+                    }
+
+                    allText += "<div class = 'row'><div class = 'col-1 no-gutters pr-0'><small>" + line.Verse + "</small></div><div class='col-11 pl-0'>" + ParseText(line.BibleText, wordstosearch, searchmode) + "</div></div>";
                 }
-
-                if (chapterInt != line.Chapter)
-                {
-                    allText += $"<div class='row'><div class='col pt-4'><h5>Chapter {line.Chapter}</h5></div></div>";
-                    chapterInt = line.Chapter;
-                }
-
-
-
-                allText += "<div class = 'row'><div class = 'col-1 no-gutters pr-0'><small>" + line.Verse + "</small></div><div class='col-11 pl-0'>" + ParseText(line.BibleText, wordstosearch, searchmode) + "</div></div>";
             }
+            else
+            {
+                int i = 0;
+                foreach (var modelState in ViewData.ModelState.Values)
+                {
+                    foreach (var error in modelState.Errors)
+                    {
+                        allText +=  "<div class = 'row bg-warning m-2 p-2'>" + error.ErrorMessage + "</div>";
+                     
+                    }
+                }
+            }
+
             return allText;
         }
         // End Process Search
