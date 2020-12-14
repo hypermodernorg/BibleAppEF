@@ -1,4 +1,4 @@
-﻿html {
+﻿/*html {
   font-size: 14px;
 }
 
@@ -7,17 +7,25 @@
     font-size: 16px;
   }
 }
+*/
+@media (min-width: 1200px) {
+    .container {
+        width: 1200px;
+    }
+}
 
 body {
 
 }
-
-content {
-
+.border3 {
+    border-width: thick !important;
+    border-radius: 10px !important;
+    border-color: rgb(105, 105, 105) !important;
+    border: solid !important;
 }
 
 footer {
-    width: 100%;
+ 
 }
 
 

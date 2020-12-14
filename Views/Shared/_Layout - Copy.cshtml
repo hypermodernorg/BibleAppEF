@@ -8,11 +8,10 @@
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/flatly.css" />*@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
-<body class=" d-flex flex-column min-vh-100 mb-n1">
-
-    <div class="container mt-4 mb-4 p-0 bg-dark rounded">
-        <div class="col bg-white p-2">
-            <nav class="navbar navbar-expand-lg navbar-dark bg-primary rounded-top">
+<body class="d-flex flex-column min-vh-100 mb-n1">
+    <header class="bg-primary">
+        <div class="container">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
                 <a class="navbar-brand" href="#">BIBLEAPP</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -30,29 +29,17 @@
                     <partial name="_LoginPartial" />
                 </div>
             </nav>
-            <main role="main" class="pb-3">
-                @RenderBody()
-            </main>
-            <partial name="_FooterPartial" />
         </div>
-    </div>
-
-    @*<partial name="_FooterPartial" />*@
+    </header>
 
 
-    @*<div class="container mt-4">
+    <div class="container mt-4">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>
     </div>
-    <div class="container">
-        <div class="row">
-            <div class="col">
-                <partial name="_FooterPartial" />
-            </div>
-        </div>
-    </div>*@
 
+    <partial name="_FooterPartial" />
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
