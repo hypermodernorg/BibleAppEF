@@ -1,5 +1,0 @@
-﻿Starting IIS Express ...
-Successfully registered URL "https://localhost:44370/" for site "BibleAppEF" application "/"
-Registration completed for site "BibleAppEF"
-Failed to register URL "http://localhost:54420/" for site "BibleAppEF" application "/". Error description: The process cannot access the file because it is being used by another process. (0x80070020)
-IIS Express is running.

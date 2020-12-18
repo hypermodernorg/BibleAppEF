@@ -1,34 +1,23 @@
-﻿/*html {
-  font-size: 14px;
-}
-
-@media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
-}
-*/
-/*@media (min-width: 1200px){
-    .container {
-        width: 1400px !important;
-    }
-}*/
-
+﻿
 body {
 
 }
 
 .body-bg {
-    background-image: url('../church.jpg');
+    background: url('../church.jpg') no-repeat center center fixed;
+    background-size: cover;
 }
-
+.bg-white {
+    background-color: #FFFFFF !important;
+}
 .bg-header {
-    background-color: darkgrey;
+    background-color: #FFFFFF;
 }
 .border3 {
     border-width: thick !important;
     border-radius: 10px !important;
     border-color: rgb(105, 105, 105) !important;
+
     border: solid !important;
 }
 
