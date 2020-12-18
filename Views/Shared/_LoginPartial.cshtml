@@ -17,9 +17,9 @@
     @if (SignInManager.IsSignedIn(User))
     {
         <li class="nav-item dropdown show pr-0 mr-0">
-            <a id="manage" class="nav-link text-white dropdown-toggle pr-0 mr-0" data-toggle="dropdown" role="button" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" aria-haspopup="true" aria-expanded="false">@UserManager.GetUserName(User)</a>
+            <a id="manage" class="nav-link text-black-50 dropdown-toggle pr-0 mr-0" data-toggle="dropdown" role="button" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage" aria-haspopup="true" aria-expanded="false">@UserManager.GetUserName(User)</a>
             <div class="dropdown-menu dropdown-menu-right">
-                <a id="manage" class="dropdown-item" text-white" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
+                <a id="manage" class="dropdown-item text-black-50" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Account</a>
                 <div class="dropdown-divider"></div>
                 @if (roleviewcheck.Succeeded) //AuthorizeAsync(User, "ViewRoles"))
                 {
@@ -52,10 +52,10 @@
     else
     {
         <li class="nav-item nav">
-            <a class="nav-link text-white" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
+            <a class="nav-link text-black-50" id="register" asp-area="Identity" asp-page="/Account/Register">Register</a>
         </li>
         <li class="nav-item pr-0 mr-0">
-            <a class="nav-link text-white mr-0 pr-0" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
+            <a class="nav-link text-black-50 mr-0 pr-0" id="login" asp-area="Identity" asp-page="/Account/Login">Login</a>
         </li>
     }
 </ul>

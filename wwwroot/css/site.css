@@ -17,6 +17,14 @@
 body {
 
 }
+
+.body-bg {
+    background-image: url('../church.jpg');
+}
+
+.bg-header {
+    background-color: darkgrey;
+}
 .border3 {
     border-width: thick !important;
     border-radius: 10px !important;
@@ -43,6 +51,8 @@ button.accept-policy {
 }
 
 a.navbar-brand {
+    font-size: xx-large;
+    font-weight: 700;
     white-space: normal;
     text-align: center;
     word-break: break-all;
