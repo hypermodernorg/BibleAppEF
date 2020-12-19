@@ -4,14 +4,15 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - BibleApp</title>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/lux.css" />
+    <link rel="stylesheet" href="~/css/custom.css" />
+    @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/lux.css" />*@
     @*<link rel="stylesheet" href="~/lib/bootstrap/dist/css/flatly.css" />*@
     <link rel="stylesheet" href="~/css/site.css" />
 </head>
 <body class="d-flex flex-column min-vh-100 mb-n1 body-bg">
     <header class="">
-        <div class="container bg-header mt-5 rounded-top border-0">
-            <nav class="navbar navbar-expand-lg bg-header border-0">
+        <div class="container bg-primary mt-5 rounded-top-lg border-0">
+            <nav class="navbar navbar-expand-lg bg-primary border-0">
                 <a class="navbar-brand" href="#">BIBLEAPP</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor01" aria-controls="navbarColor01" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -33,7 +34,7 @@
     </header>
 
 
-    <div class="container pt-4 bg-light border-0">
+    <div class="container pt-4 bg-primary border-0">
         <main role="main" class="pb-3">
             @RenderBody()
         </main>

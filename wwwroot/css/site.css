@@ -7,19 +7,8 @@ body {
     background: url('../church.jpg') no-repeat center center fixed;
     background-size: cover;
 }
-.bg-white {
-    background-color: #FFFFFF !important;
-}
-.bg-header {
-    background-color: #FFFFFF;
-}
-.border3 {
-    border-width: thick !important;
-    border-radius: 10px !important;
-    border-color: rgb(105, 105, 105) !important;
 
-    border: solid !important;
-}
+
 
 footer {
  
@@ -46,6 +35,7 @@ a.navbar-brand {
     text-align: center;
     word-break: break-all;
 }
+
 
 .noteslist {
     max-width: 200px;
