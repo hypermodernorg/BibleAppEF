@@ -4,20 +4,23 @@ body {
 }
 
 .body-bg {
-    background: url('../church.jpg') no-repeat center center fixed;
+    background: url('../images/ocean.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 
-
+.cimage {
+    object-fit:cover;
+    max-height: 450px;
+}
 
 footer {
  
 }
 
-
 header {
 
 }
+
 
 .box-shadow {
   box-shadow: 0 .25rem .75rem rgba(0, 0, 0, .05);

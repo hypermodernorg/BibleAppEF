@@ -13,6 +13,7 @@ $gray-800: #343a40 !default;
 $gray-900: #212529 !default;
 $black: #000 !default;
 
+$siconcolor: $gray-500;
 $grays: () !default;
 $grays: map-merge( ( "100": $gray-100, "200": $gray-200, "300": $gray-300, "400": $gray-400, "500": $gray-500, "600": $gray-600, "700": $gray-700, "800": $gray-800, "900": $gray-900 ), $grays );
 
@@ -53,11 +54,11 @@ $theme-colors: map-merge(
         "dark": $dark ), 
     $theme-colors );
 
-$grid-breakpoints: ( xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1440px) !default;
-$container-max-widths: ( sm: 540px, md: 720px, lg: 960px, xl: 1140px, xxl: 1400px) !default;
+$grid-breakpoints: ( xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1500px) !default;
+$container-max-widths: ( sm: 540px, md: 720px, lg: 960px, xl: 1140px, xxl: 1440px) !default;
 
 $border-radius: .2.5rem !default;
-$border-radius-lg: .8rem !default;
+$border-radius-lg: .4rem !default;
 $border-radius-sm: .2rem !default;
 
 $enable-shadows: true !default;
@@ -74,6 +75,79 @@ $enable-gradients: true !default;
     border-bottom-left-radius: $border-radius-lg !important;
 }
 
+.main-area {
+    background-color: $white;
+}
+.trade-mark {
+    background-color: $black;
+    color: $siconcolor;
+}
+
+.footer-links {
+    padding: 50px 0;
+    color: $black;
+    background-color: $siconcolor;
+}
+
+
+
+.border-top-left {
+    border-top-left-radius: $border-radius-lg !important;
+}
+
+//// Social Icon Strip ////
+@media screen and (min-width: 994px) {
+    #social-collapse {
+        background-color: $black!important;
+        border-top-right-radius: $border-radius-lg !important;
+        border: none;
+    }
+
+    .s-icon {
+        color: $siconcolor;
+        font-size: 1.75em;
+        display: block;
+        padding-top: .75em;
+        padding-bottom: .75em;
+    }
+    .cimage {
+        object-fit: cover;
+        max-height: 450px;
+        background-color: $white !important;
+    }
+    .fpimage {
+        object-fit: cover;
+        max-height: 350px;
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 992px) {
+    #social-collapse {
+        background-color: $black !important;
+        text-align: center;
+        padding-top: 10px;
+        padding-bottom: 10px;
+    }
+
+    .s-icon {
+        color: $siconcolor;
+        font-size: 1em;
+        padding: .5em;
+        vertical-align: middle;
+    }
+    .cimage {
+        object-fit: cover;
+        max-height: 450px;
+        background-color: $white !important;
+
+    }
+    .fpimage {
+        object-fit: cover;
+        max-height: 350px;
+        width: 100%;
+    }
+}
 
 // Navbar
 .navbar-brand {
@@ -81,7 +155,14 @@ $enable-gradients: true !default;
     color: $dark;
 
 }
+
+// Typograhy
+$font-family-sans-serif: -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
+
+
+
 //////////////// End variables ////////////////////////
+@import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import "../scss/bootstrap.scss";
 
 
