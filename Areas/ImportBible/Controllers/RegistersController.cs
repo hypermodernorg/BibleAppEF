@@ -65,6 +65,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
                 }
 
             }
+            ViewBag.IsSearch = true;
             ViewData.Model = versionList;
 
             return View();

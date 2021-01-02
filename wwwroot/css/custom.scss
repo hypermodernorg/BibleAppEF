@@ -37,8 +37,10 @@ $success: $green !default;
 $info: $cyan !default;
 $warning: $yellow !default;
 $danger: $red !default;
-$light: $gray-100 !default;
+$light: $white !default;
 $dark: $gray-800 !default;
+$search: $gray-500 !default;
+$search-results: $gray-100 !default;
 
 $theme-colors: () !default;
 
@@ -51,9 +53,14 @@ $theme-colors: map-merge(
         "warning": $warning, 
         "danger": $danger, 
         "light": $light, 
-        "dark": $dark ), 
-    $theme-colors );
+        "dark": $dark,
+        "search": $search,
+        "search-results": $search-results
+    ),  
+$theme-colors );
+// End Color System
 
+// Added a larger max width
 $grid-breakpoints: ( xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px, xxl: 1500px) !default;
 $container-max-widths: ( sm: 540px, md: 720px, lg: 960px, xl: 1140px, xxl: 1440px) !default;
 
@@ -63,7 +70,6 @@ $border-radius-sm: .2rem !default;
 
 $enable-shadows: true !default;
 $enable-gradients: true !default;
-// End Color System
 
 // Border Radius
 .rounded-top-lg {
@@ -82,6 +88,10 @@ $enable-gradients: true !default;
     background-color: $black;
     color: $siconcolor;
 }
+.border-top-left {
+    border-top-left-radius: $border-radius-lg !important;
+}
+// End Border Radius
 
 .footer-links {
     padding: 50px 0;
@@ -91,9 +101,7 @@ $enable-gradients: true !default;
 
 
 
-.border-top-left {
-    border-top-left-radius: $border-radius-lg !important;
-}
+
 
 //// Social Icon Strip ////
 @media screen and (min-width: 994px) {
@@ -120,6 +128,9 @@ $enable-gradients: true !default;
         max-height: 350px;
         width: 100%;
     }
+    .border-top-right {
+        border-top-right-radius: 0px !important;
+    }
 }
 
 @media screen and (max-width: 992px) {
@@ -136,34 +147,43 @@ $enable-gradients: true !default;
         padding: .5em;
         vertical-align: middle;
     }
+
     .cimage {
         object-fit: cover;
         max-height: 450px;
         background-color: $white !important;
-
     }
+
     .fpimage {
         object-fit: cover;
         max-height: 350px;
         width: 100%;
     }
+
+    .border-top-right {
+        border-top-right-radius: $border-radius-lg !important;
+    }
 }
 
 // Navbar
 .navbar-brand {
-
     color: $dark;
-
 }
+
+
 
 // Typograhy
 $font-family-sans-serif: -apple-system, BlinkMacSystemFont, Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji" !default;
 
 
 
+$component-active-color: $gray-300 !default;
+$component-active-bg: $gray-800 !default;
+
 //////////////// End variables ////////////////////////
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import "../scss/bootstrap.scss";
+
 
 
 
