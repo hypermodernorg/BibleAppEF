@@ -58,6 +58,7 @@ $theme-colors: map-merge(
         "search-results": $search-results
     ),  
 $theme-colors );
+$link-color: $gray-500 !default;
 // End Color System
 
 // Added a larger max width
