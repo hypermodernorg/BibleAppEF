@@ -24,6 +24,7 @@ namespace BibleAppEF.Areas.ImportBible.Models
         public bool IsActive { get; set; }
     }
 
+
     public class Bible
     {
         public int Id { get; set; }

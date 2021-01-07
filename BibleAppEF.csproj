@@ -4,6 +4,7 @@
     <TargetFramework>net5.0</TargetFramework>
     <CopyRefAssembliesToPublishDirectory>false</CopyRefAssembliesToPublishDirectory>
     <Authors>Lander Compton</Authors>
+    <UserSecretsId>0aafcb1c-a65f-49ea-9777-b853f867a935</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

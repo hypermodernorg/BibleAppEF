@@ -408,7 +408,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         public string UpdateBooks(string version)
         {
             var bookList = _context.Books
-                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM bibles WHERE Version = '{version}' GROUP BY Book")
+                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM Bibles WHERE Version = '{version}' GROUP BY Book")
                 .ToList();
             var bookWithoutCol = bookList.Select(x => new { x.Book }).ToList();
 
@@ -427,7 +427,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         public string UpdateChapters(string version, string book)
         {
             var chapterList = _context.Books
-                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM bibles WHERE Version = '{version}' and Book = '{book}' GROUP BY Chapter")
+                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM Bibles WHERE Version = '{version}' and Book = '{book}' GROUP BY Chapter")
                 .ToList();
 
             var listWithoutCol = chapterList.Select(x => new { x.Chapter }).ToList();
@@ -439,7 +439,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         public string UpdateVerses(string version, string book, string chapter)
         {
             var verseList = _context.Books
-                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM bibles WHERE Version = '{version}' and Book = '{book}' and Chapter = '{chapter}' GROUP BY Verse")
+                .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM Bibles WHERE Version = '{version}' and Book = '{book}' and Chapter = '{chapter}' GROUP BY Verse")
                 .ToList();
 
             var listWithoutCol = verseList.Select(x => new { x.Verse }).ToList();

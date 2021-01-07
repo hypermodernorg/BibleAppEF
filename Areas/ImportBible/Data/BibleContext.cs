@@ -14,7 +14,7 @@ namespace BibleAppEF.Areas.ImportBible.Data
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder
-                .UseMySql("server=localhost;uid=root;pwd=Nisarascalcj1!r;database=biblebase",
+                .UseMySql("server=localhost;uid=hypermodern;pwd=Nisarascalcj1!h;database=biblebase",
                    MySqlServerVersion.LatestSupportedServerVersion,
                         mySqlOptions => mySqlOptions
                             .CharSetBehavior(CharSetBehavior.NeverAppend)
