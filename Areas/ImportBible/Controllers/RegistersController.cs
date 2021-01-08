@@ -16,6 +16,7 @@ using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.Extensions.Logging;
 
 namespace BibleAppEF.Areas.ImportBible.Controllers
 {
@@ -26,12 +27,15 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         private readonly BibleContext _context;
         private readonly IWebHostEnvironment _env;
         private readonly UserManager<ApplicationUser> _userManager;
+        private readonly ILogger<RegistersController> _logger;
 
-        public RegistersController(BibleContext context, IWebHostEnvironment env, UserManager<ApplicationUser> userManager)
+        public RegistersController(BibleContext context, IWebHostEnvironment env, UserManager<ApplicationUser> userManager, ILogger<RegistersController> logger)
         {
             _context = context;
             _env = env;
             _userManager = userManager;
+            _logger = logger;
+            _logger.LogDebug(1, "NLog injected into HomeController");
         }
 
         // Search
@@ -76,7 +80,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         public string BuildQuery(string version, string book, string chapter, string verse, string wordstosearch, string searchmode, string nottosearch, string notmode)
         {
 
-            string query = $"SELECT * FROM BIBLES WHERE (Version = '{version}')";
+            string query = $"SELECT * FROM Bibles WHERE (Version = '{version}')";
 
             if (book != null)
             {
@@ -407,13 +411,14 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
         [HttpPost]
         public string UpdateBooks(string version)
         {
+            _logger.LogInformation("UpdateBooks called");
             var bookList = _context.Books
                 .FromSqlRaw($"SELECT Id, Book, Chapter, Verse, Version FROM Bibles WHERE Version = '{version}' GROUP BY Book")
                 .ToList();
             var bookWithoutCol = bookList.Select(x => new { x.Book }).ToList();
 
             var versionList = _context.Registers
-                .FromSqlRaw($"SELECT * FROM registers WHERE Abbreviation = '{version}'")
+                .FromSqlRaw($"SELECT * FROM Registers WHERE Abbreviation = '{version}'")
                 .ToList();
             var versionWithoutCol = versionList.Select(x => new { x.Name }).ToList();
 
@@ -644,7 +649,7 @@ namespace BibleAppEF.Areas.ImportBible.Controllers
             Bible bible = new Bible();
 
             var lines = _context.Bibles
-                 .FromSqlRaw($"Select * from bibles where Version = '{abbreviation}'")
+                 .FromSqlRaw($"Select * from Bibles where Version = '{abbreviation}'")
                  .ToList();
             _context.Bibles.RemoveRange(lines); // bible version to remove
 

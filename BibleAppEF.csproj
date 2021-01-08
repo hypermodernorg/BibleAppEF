@@ -18,10 +18,14 @@
     <Content Remove="C:\Users\lande\.nuget\packages\bootstrap.sass\4.5.3\contentFiles\any\any\wwwroot\scss\bootstrap.css" />
     <Content Remove="C:\Users\lande\.nuget\packages\bootstrap.sass\4.5.3\contentFiles\any\any\wwwroot\scss\bootstrap.min.css" />
     <Content Remove="compilerconfig.json" />
+    <Content Remove="nlog.config" />
   </ItemGroup>
 
   <ItemGroup>
     <None Include="compilerconfig.json" />
+    <None Include="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="wwwroot\lib\bootstrap-icons-1.2.1\alarm-fill.svg" />
     <None Include="wwwroot\lib\bootstrap-icons-1.2.1\alarm.svg" />
     <None Include="wwwroot\lib\bootstrap-icons-1.2.1\align-bottom.svg" />
@@ -1337,6 +1341,8 @@
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.0" />
+    <PackageReference Include="NLog.Extensions.Logging" Version="1.7.0" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.10.0" />
     <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.0-alpha.2" />
   </ItemGroup>
 
@@ -1350,6 +1356,16 @@
     <Content Update="wwwroot\images\ocean.jpg">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Logs\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="Logs\nlog-all-2021-01-07.log">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>
